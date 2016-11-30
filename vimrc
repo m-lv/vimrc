@@ -195,7 +195,7 @@ set secure
 " Автоматическое создание include guard'ов
 function! InsIncludeGuard()
     let guard_name = "_" . substitute(toupper(expand('%:t')), "\\.", "_", "g") . "_"
-    execute "normal! 1Go"
+    execute "normal! 1GO"
     call setline(".", "#ifndef " . guard_name)
     execute "normal! o"
     call setline(".", "#define " . guard_name)
