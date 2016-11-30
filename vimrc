@@ -12,10 +12,15 @@ Plugin 'VundleVim/Vundle.vim'
 
 " user defined plugins
 
-Plugin 'Rip-Rip/clang_complete'
+" Plugin 'Rip-Rip/clang_complete'
+Plugin 'Valloric/YouCompleteMe' 
 
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
+
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/nerdtree'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
 
 
 " All of your Plugins must be added before the following line
@@ -32,6 +37,10 @@ filetype plugin indent on    " required
 "
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
+
+
+" Установим шелл
+set shell=sh
 
 " Чтобы vim показывал подходящие файлыЮ как нормальный шелл
 set wildmode=longest:list,full
@@ -63,6 +72,10 @@ syntax on
 " Перенос длинных строк
 set wrap
 
+" Используем системный буфер в качестве дефолтного
+set clipboard=unnamed
+
+
 " Дефолтная кодировка
 set ffs=unix,dos,mac
 set fencs=utf-8,cp1251,koi8-r,ucs-2,cp866 
@@ -72,6 +85,25 @@ set showmatch
 set hlsearch
 set incsearch
 set ignorecase
+
+
+" Включаем проверку арфаграфии
+set spelllang=ru,en
+
+
+" Включаем сворачвание
+" set foldenable           
+" на основе отступов по-умолчанию
+" set foldmethod=indent
+" переключение на сворачивание на основе синтаксиса
+map zs :set foldmethod=syntax<CR>
+" на основе отступов
+map zi :set foldmethod=indent<CR>  
+
+
+" Более логичноедействие Y, копирование до конца строки
+map Y y$
+
 
 
 " Специфичные настройки для некоторых типов файлов
@@ -132,6 +164,32 @@ set secure
     let g:UltiSnipsExpandTrigger="<tab>"
 
 
+    " NerdCommenter
+    " Добавлять пробел перед текстом комментария
+    let g:NERDSpaceDelims = 1
+
+    " Use compact syntax for prettified multi-line comments
+    let g:NERDCompactSexyComs = 1
+    
+    " Align line-wise comment delimiters flush left instead of following code
+    " indentation
+    let g:NERDDefaultAlign = 'left'
+    
+    " Пример использования собственного стиля комментирования
+    let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+    
+    " Allow commenting and inverting empty lines (useful when commenting a
+    " region)
+    let g:NERDCommentEmptyLines = 1
+    
+    " Enable trimming of trailing whitespace when uncommenting
+    let g:NERDTrimTrailingWhitespace = 1
+
+
+
+    " NerdTree
+    " Показывать панель NerdТree по клавише ctrl + n
+    map <C-n> :NERDTreeToggle<CR> 
 
 
 " Автоматическое создание include guard'ов
@@ -146,13 +204,8 @@ function! InsIncludeGuard()
     execute "normal! o"
 endfunction
 
-" Обертка для InsIncludeGuard при создании нового файла
-function! InsIncludeGuardNewFile()
-    call InsIncludeGuard()
-endfunction
-
 " Автоматически применять InsIncludeGuard к новым хедерам
-autocmd BufNewFile *.{h,hpp,h++} call InsIncludeGuardNewFile()
+autocmd BufNewFile *.{h,hpp,h++} call InsIncludeGuard()
 
 
 " Вставка комментария-разделителя в стиле С++
