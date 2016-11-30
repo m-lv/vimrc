@@ -59,6 +59,7 @@ set smarttab
 " Подсветка синтаксиса
 syntax on
 
+
 " Перенос длинных строк
 set wrap
 
@@ -80,15 +81,17 @@ set ignorecase
 
     " С/C++ файлы
     " Расставлять отступы в стиле С
-    autocmd filetype c,cpp set cin                                                  
-                                                                                     
-    " make-файлы                                                                       
-    " В make-файлах нам не нужно заменять табуляцию пробелами                          
-    autocmd filetype make set noexpandtab                                              
-    autocmd filetype make set nocin                                                    
+    autocmd filetype c,cpp set cin
+    
+
+    " make-файл
+    " В make-файлах нам не нужно заменять табуляцию пробелам
+    autocmd filetype make set noexpandta
+    autocmd filetype make set noci
      
-    " python-файлы                                                                  
-    " Не расставлять отступы в стиле С                                              
+
+    " python-файл
+    " Не расставлять отступы в стиле 
     autocmd filetype python set nocin 
 
 " Устанавливаем систему сборки
