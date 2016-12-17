@@ -12,15 +12,25 @@ Plugin 'VundleVim/Vundle.vim'
 
 " user defined plugins
 
+" Автодополнение, подсказки при вводе, рефакторинг и т.д.для с++
 " Plugin 'Rip-Rip/clang_complete'
 Plugin 'Valloric/YouCompleteMe' 
 
+" Генерация кода
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 
+" Удобое комментирование
 Plugin 'scrooloose/nerdcommenter'
+
+" Дерево проекта
 Plugin 'scrooloose/nerdtree'
+" + взаимодействе с гитом
 Plugin 'Xuyuanp/nerdtree-git-plugin'
+
+
+" lisp slimv
+Plugin 'https://github.com/kovisoft/slimv.git'
 
 
 " All of your Plugins must be added before the following line
