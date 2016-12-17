@@ -202,6 +202,13 @@ set secure
     map <C-n> :NERDTreeToggle<CR> 
 
 
+    " slimv
+    " Не выставлять закрывающие скобки автоматически
+    let g:paredit_mode=0
+    " включаем 'радужные' скобки
+    let g:lisp_rainbow=1
+
+
 " Автоматическое создание include guard'ов
 function! InsIncludeGuard()
     let guard_name = "_" . substitute(toupper(expand('%:t')), "\\.", "_", "g") . "_"
