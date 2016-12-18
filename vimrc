@@ -52,7 +52,7 @@ filetype plugin indent on    " required
 " Установим шелл
 set shell=sh
 
-" Чтобы vim показывал подходящие файлыЮ как нормальный шелл
+" Чтобы vim показывал подходящие файлы, как нормальный шелл
 set wildmode=longest:list,full
 
 
@@ -64,6 +64,8 @@ set number
 
 " Ширина строки
 set textwidth=80
+" Не переносить строки
+set nowrap
 
 " Замена \t на пробелы
 set expandtab
@@ -78,9 +80,6 @@ set smarttab
 " Подсветка синтаксиса
 syntax on
 
-
-" Перенос длинных строк
-set wrap
 
 " Используем системный буфер в качестве дефолтного
 set clipboard=unnamed
@@ -101,19 +100,17 @@ set ignorecase
 set spelllang=ru,en
 
 
-" Включаем сворачвание
-" set foldenable           
-" на основе отступов по-умолчанию
-" set foldmethod=indent
-" переключение на сворачивание на основе синтаксиса
-map zs :set foldmethod=syntax<CR>
-" на основе отступов
-map zi :set foldmethod=indent<CR>  
+" Настройки фолдинга
+" Используем отступы на основе синтаксиса по-умолчанию
+set foldmethod=syntax
+" Для текстовых файлов - на основе отступов
+autocmd filetype txt set foldmethod=ident
+" Открытие/закрытие на пробел
+nnoremap <space> za
 
 
 " Более логичноедействие Y, копирование до конца строки
 map Y y$
-
 
 
 " Специфичные настройки для некоторых типов файлов
