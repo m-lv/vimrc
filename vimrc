@@ -15,10 +15,14 @@ Plugin 'VundleVim/Vundle.vim'
 " Автодополнение, подсказки при вводе, рефакторинг и т.д.для с++
 " Plugin 'Rip-Rip/clang_complete'
 Plugin 'Valloric/YouCompleteMe' 
+Plugin 'rdnetto/YCM-Generator'
 
 " Генерация кода
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
+
+" Посветка синтаксиса в pure c/c++/objective c
+" Plugin 'https://github.com/jeaye/color_coded.git'
 
 " Удобое комментирование
 Plugin 'scrooloose/nerdcommenter'
@@ -218,26 +222,14 @@ function! InsIncludeGuard()
     execute "normal! o"
 endfunction
 
-" Автоматически применять InsIncludeGuard к новым хедерам
-autocmd BufNewFile *.{h,hpp,h++} call InsIncludeGuard()
-
-
-" Вставка комментария-разделителя в стиле С++
-function! InsCppSep()
-    let length = 80 - 3
-    execute "normal! o"
-    let text = "// " . repeat("-", length)
-    call setline(".", text)
+" Вставка #pragma once в начало файла
+function! InsPragmaOnce()
+    execute "normal! 1Go"
+    call setline(".", "#pragma once")
 endfunction
 
-
-
-" Вставка комментария-заголовка в стиле С++
-function! InsCppCaption(text)
-    call InsCppSep()
-    execute "normal! o"
-    call setline(".", "// "  . a:text)
-    call InsCppSep()
-endfunction
-
+" Автоматически применять InsIncludeGuard к новым хедерам (.h++, .hpp)
+autocmd BufNewFile *.{hpp,h++} call InsPragmaOnce()
+" Автоматически применять InsIncludeGuard к новым хедерам (.h)
+autocmd BufNewFile *.{h} call InsIncludeGuard()
 
