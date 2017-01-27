@@ -12,6 +12,25 @@ Plugin 'VundleVim/Vundle.vim'
 
 " user defined plugins
 
+" Автоматически закрывать открытые скобки
+Plugin 'https://github.com/Townk/vim-autoclose.git'
+
+" Тут все понятно
+Plugin 'https://github.com/vim-airline/vim-airline.git'
+Plugin 'https://github.com/vim-airline/vim-airline-themes.git'
+
+" Plugin 'https://github.com/powerline/powerline.git'
+" Plugin 'https://github.com/powerline/fonts.git'
+
+" Интеграция с git
+Plugin 'https://github.com/airblade/vim-gitgutter.git'
+
+" Показывать теги для текущего файла
+Plugin 'https://github.com/majutsushi/tagbar.git'
+
+" Множественное выделение, как SublimeText
+Plugin 'https://github.com/terryma/vim-multiple-cursors.git'
+
 " Автодополнение, подсказки при вводе, рефакторинг и т.д.для с++
 " Plugin 'Rip-Rip/clang_complete'
 Plugin 'Valloric/YouCompleteMe' 
@@ -66,6 +85,9 @@ set mouse=a
 " Показать номера строк
 set number
 
+" Автоматически обновлять файл при изменении сторонней программой
+set autoread
+
 " Ширина строки
 set textwidth=80
 " Не переносить строки
@@ -93,27 +115,47 @@ set clipboard=unnamed
 set ffs=unix,dos,mac
 set fencs=utf-8,cp1251,koi8-r,ucs-2,cp866 
 
+" более удобная работа с кириллицей. При нажатии <C-6> в режиме вставки, 
+" vim изменит режим с "Insert" на "Insert (lang)",
+" после чего будут вводиться русские символы. Если вернуться в нормальный 
+" режим, то все команды будут работать.
+set keymap=russian-jcukenwin
+set iminsert=0
+set imsearch=0
+
 " Настройки поиска
 set showmatch
 set hlsearch
 set incsearch
 set ignorecase
 
+" Открывать новые окна справа
+set splitright
 
 " Включаем проверку арфаграфии
 set spelllang=ru,en
 
+" Использовать темный фон
+set background=dark
 
 " Настройки фолдинга
 " Используем отступы на основе синтаксиса по-умолчанию
-set foldmethod=syntax
+" set foldmethod=syntax
 " Для текстовых файлов - на основе отступов
-autocmd filetype txt set foldmethod=ident
+" autocmd filetype txt set foldmethod=ident
 " Открытие/закрытие на пробел
 nnoremap <space> za
 
+" map <alt+n> для перемещения между вкладками
+for c in range(1, 9)
+	exec "set <A-".c.">=\e".c
+	exec "map \e".c." <A-".c.">"
 
-" Более логичноедействие Y, копирование до конца строки
+	let n = c - '0'
+	exec "map <M-". n ."> ". n ."gt"
+endfor
+
+" Более логичное действие Y, копирование до конца строки
 map Y y$
 
 
@@ -153,6 +195,21 @@ set secure
 
 
 " Настройки плагинов
+    " Airline
+    " Выбор темы
+    let g:airline_theme='simple'
+    " Включаем список табов по-умолчанию
+    let g:airline#extensions#tabline#enabled = 1
+    " Включаем панели по-умолчанию
+    set laststatus=2
+    " Включаем улучшенные шрифты
+    let g:airline_powerline_fonts = 1
+    " всегда показывать tabline
+    let g:airline#extensions#tabline#tab_min_count = 0
+    " отображать директорию только если открыт еще один файл со сходным именем
+    let g:airline#extensions#tabline#formatter = 'unique_tail'
+    
+    
     " Clang-completer                                                                
     " Включить дополнительные подсказки (аргументы функций, шаблонов и т.д.)        
     let g:clang_snippets=1                                                          
@@ -200,7 +257,14 @@ set secure
 
     " NerdTree
     " Показывать панель NerdТree по клавише ctrl + n
-    map <C-n> :NERDTreeToggle<CR> 
+    map <F5> :NERDTreeToggle<CR> 
+
+
+    " TagBar
+    map <F6> :TagbarToggle<CR>
+
+    " GitGutter
+    map <F7> :GitGutterToggle<CR>
 
 
     " slimv
@@ -208,6 +272,19 @@ set secure
     let g:paredit_mode=0
     " включаем 'радужные' скобки
     let g:lisp_rainbow=1
+
+
+" Настройка комбинаций клавиш для YouCompleteMe
+nnoremap <leader>yww :YcmShowDetailedDiagnostic<CR>
+
+nnoremap <leader>ygg :YouCompleteMeGoTo<CR>
+nnoremap <leader>ygd :YouCompleteMeGoToDeclaration<CR>
+nnoremap <leader>ygp :YouCompleteMeGoToDefinition<CR>
+nnoremap <leader>ygi :YouCompleteMeGoToInclude<CR>
+
+nnoremap <leader>ydd :YouCompleteMeGetDoc<CR>
+
+nnoremap <leader>yrn :YouCompleteMeRefactorRename<CR>
 
 
 " Автоматическое создание include guard'ов
@@ -224,8 +301,11 @@ endfunction
 
 " Вставка #pragma once в начало файла
 function! InsPragmaOnce()
-    execute "normal! 1Go"
+    execute "normal! 1GO"
     call setline(".", "#pragma once")
+    execute "normal! o"
+    execute "normal! o"
+    execute "normal! O"
 endfunction
 
 " Автоматически применять InsIncludeGuard к новым хедерам (.h++, .hpp)
