@@ -13,7 +13,9 @@ Plugin 'VundleVim/Vundle.vim'
 " user defined plugins
 
 " Автоматически закрывать открытые скобки
-Plugin 'https://github.com/Townk/vim-autoclose.git'
+" !! при нажатии стрелки вверх в режиме ввода вставляет 
+" в буфер мусор
+" Plugin 'https://github.com/Townk/vim-autoclose.git'
 
 " Тут все понятно
 Plugin 'https://github.com/vim-airline/vim-airline.git'
