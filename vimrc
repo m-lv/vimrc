@@ -259,14 +259,14 @@ set secure
 
     " NerdTree
     " Показывать панель NerdТree по клавише ctrl + n
-    map <F5> :NERDTreeToggle<CR> 
+    map 5 :NERDTreeToggle<CR> 
 
 
     " TagBar
-    map <F6> :TagbarToggle<CR>
+    map 6 :TagbarToggle<CR>
 
     " GitGutter
-    map <F7> :GitGutterToggle<CR>
+    map 7 :GitGutterToggle<CR>
 
 
     " slimv
