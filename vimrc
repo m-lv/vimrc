@@ -148,14 +148,6 @@ set background=dark
 " Открытие/закрытие на пробел
 nnoremap <space> za
 
-" map <alt+n> для перемещения между вкладками
-for c in range(1, 9)
-	exec "set <A-".c.">=\e".c
-	exec "map \e".c." <A-".c.">"
-
-	let n = c - '0'
-	exec "map <M-". n ."> ". n ."gt"
-endfor
 
 " Более логичное действие Y, копирование до конца строки
 map Y y$
@@ -169,6 +161,10 @@ map Y y$
     " С/C++ файлы
     " Расставлять отступы в стиле С
     autocmd filetype c,cpp set cin
+
+
+    " .ino - файлы
+    autocmd filetype ino set cin
     
 
     " make-файл
@@ -237,21 +233,16 @@ set secure
     " NerdCommenter
     " Добавлять пробел перед текстом комментария
     let g:NERDSpaceDelims = 1
-
     " Use compact syntax for prettified multi-line comments
     let g:NERDCompactSexyComs = 1
-    
     " Align line-wise comment delimiters flush left instead of following code
     " indentation
     let g:NERDDefaultAlign = 'left'
-    
     " Пример использования собственного стиля комментирования
     let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
-    
     " Allow commenting and inverting empty lines (useful when commenting a
     " region)
     let g:NERDCommentEmptyLines = 1
-    
     " Enable trimming of trailing whitespace when uncommenting
     let g:NERDTrimTrailingWhitespace = 1
 
@@ -259,14 +250,14 @@ set secure
 
     " NerdTree
     " Показывать панель NerdТree по клавише ctrl + n
-    map <A-5> :NERDTreeToggle<CR> 
+    map <F5> :NERDTreeToggle<CR> 
 
 
     " TagBar
-    map <A-6> :TagbarToggle<CR>
+    map <F6> :TagbarToggle<CR>
 
     " GitGutter
-    map <A-7>:GitGutterToggle<CR>
+    map <F7> :GitGutterToggle<CR>
 
 
     " slimv
@@ -276,17 +267,17 @@ set secure
     let g:lisp_rainbow=1
 
 
-" Настройка комбинаций клавиш для YouCompleteMe
-nnoremap <leader>yww :YcmShowDetailedDiagnostic<CR>
+    " Настройка комбинаций клавиш для YouCompleteMe
+    nnoremap <leader>yw  :YcmShowDetailedDiagnostic<CR>
 
-nnoremap <leader>ygg :YouCompleteMeGoTo<CR>
-nnoremap <leader>ygd :YouCompleteMeGoToDeclaration<CR>
-nnoremap <leader>ygp :YouCompleteMeGoToDefinition<CR>
-nnoremap <leader>ygi :YouCompleteMeGoToInclude<CR>
+    nnoremap <leader>ygg :YouCompleteMeGoTo<CR>
+    nnoremap <leader>ygd :YouCompleteMeGoToDeclaration<CR>
+    nnoremap <leader>ygp :YouCompleteMeGoToDefinition<CR>
+    nnoremap <leader>ygi :YouCompleteMeGoToInclude<CR>
 
-nnoremap <leader>ydd :YouCompleteMeGetDoc<CR>
+    nnoremap <leader>yd  :YouCompleteMeGetDoc<CR>
 
-nnoremap <leader>yrn :YouCompleteMeRefactorRename<CR>
+    nnoremap <leader>yrn :YouCompleteMeRefactorRename<CR>
 
 
 " Автоматическое создание include guard'ов
