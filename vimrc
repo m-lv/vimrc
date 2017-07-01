@@ -4,61 +4,62 @@ filetype off                  " required
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
 " user defined plugins
 
-" Автоматически закрывать открытые скобки
-" !! при нажатии стрелки вверх в режиме ввода вставляет 
-" в буфер мусор
-" Plugin 'https://github.com/Townk/vim-autoclose.git'
+    " Автоматически закрывать открытые скобки
+    " !! при нажатии стрелки вверх в режиме ввода вставляет 
+    " в буфер мусор
+    Plugin 'https://github.com/Townk/vim-autoclose.git'
 
-" Тут все понятно
-Plugin 'https://github.com/vim-airline/vim-airline.git'
-Plugin 'https://github.com/vim-airline/vim-airline-themes.git'
+    " Визуальное оформление
+    Plugin 'https://github.com/vim-airline/vim-airline.git'
+    Plugin 'https://github.com/vim-airline/vim-airline-themes.git'
 
-" Plugin 'https://github.com/powerline/powerline.git'
-" Plugin 'https://github.com/powerline/fonts.git'
-
-" Интеграция с git
-Plugin 'https://github.com/airblade/vim-gitgutter.git'
-
-" Показывать теги для текущего файла
-Plugin 'https://github.com/majutsushi/tagbar.git'
-
-" Множественное выделение, как SublimeText
-Plugin 'https://github.com/terryma/vim-multiple-cursors.git'
-
-" Автодополнение, подсказки при вводе, рефакторинг и т.д.для с++
-" Plugin 'Rip-Rip/clang_complete'
-Plugin 'Valloric/YouCompleteMe' 
-Plugin 'rdnetto/YCM-Generator'
-
-" Генерация кода
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
-
-" Посветка синтаксиса в pure c/c++/objective c
-" Plugin 'https://github.com/jeaye/color_coded.git'
-
-" Удобое комментирование
-Plugin 'scrooloose/nerdcommenter'
-
-" Дерево проекта
-Plugin 'scrooloose/nerdtree'
-" + взаимодействе с гитом
-Plugin 'Xuyuanp/nerdtree-git-plugin'
+    " Интеграция с git
+    Plugin 'https://github.com/airblade/vim-gitgutter.git'
 
 
-" lisp slimv
-Plugin 'https://github.com/kovisoft/slimv.git'
+    " Показывать теги для текущего файла
+    Plugin 'https://github.com/majutsushi/tagbar.git'
 
+
+    " Множественное выделение, как в SublimeText
+    Plugin 'https://github.com/terryma/vim-multiple-cursors.git'
+
+
+    " Автодополнение, подсказки при вводе, рефакторинг и т.д.для с++
+    Plugin 'Valloric/YouCompleteMe' 
+    Plugin 'rdnetto/YCM-Generator' " генерация конфигурационного файла
+
+
+    " Генерация кода
+    Plugin 'SirVer/ultisnips'
+    Plugin 'honza/vim-snippets'
+
+
+    " Посветка синтаксиса в pure c/c++/objective c
+    " Plugin 'https://github.com/jeaye/color_coded.git'
+
+
+    " Удобое комментирование
+    Plugin 'scrooloose/nerdcommenter'
+
+
+    " Дерево проекта
+    Plugin 'scrooloose/nerdtree'
+    " + взаимодействе с гитом
+    Plugin 'Xuyuanp/nerdtree-git-plugin'
+
+
+    " lisp slimv
+    Plugin 'https://github.com/kovisoft/slimv.git'
 
 " All of your Plugins must be added before the following line
+
 call vundle#end()            " required
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
@@ -74,163 +75,281 @@ filetype plugin indent on    " required
 " Put your non-Plugin stuff after this line
 
 
-" Установим шелл
-set shell=sh
-
-" Чтобы vim показывал подходящие файлы, как нормальный шелл
-set wildmode=longest:list,full
+" -----------------------------------------------------------------------------
+" Общие настройки 
+" -----------------------------------------------------------------------------
 
 
-" Включить мышь
-set mouse=a
+    " Показать номера строк
+    set number
 
-" Показать номера строк
-set number
+    " Автоматически обновлять файл при изменении сторонней программой
+    set autoread
 
-" Автоматически обновлять файл при изменении сторонней программой
-set autoread
+    " Подсветка синтаксиса
+    syntax on
 
-" Ширина строки
-set textwidth=80
-" Не переносить строки
-set nowrap
+    " Более логичное действие Y, копирование до конца строки
+    map Y y$
 
-" Замена \t на пробелы
-set expandtab
-" Ширина табуляции в колонках
-set ts=4
-" Количество пробелов (колонок) одного отступа
-set shiftwidth=4
-
-" Умные отступы
-set smarttab
-
-" Подсветка синтаксиса
-syntax on
-
-
-" Используем системный буфер в качестве дефолтного
-set clipboard=unnamed
-
-
-" Дефолтная кодировка
-set ffs=unix,dos,mac
-set fencs=utf-8,cp1251,koi8-r,ucs-2,cp866 
-
-" более удобная работа с кириллицей. При нажатии <C-6> в режиме вставки, 
-" vim изменит режим с "Insert" на "Insert (lang)",
-" после чего будут вводиться русские символы. Если вернуться в нормальный 
-" режим, то все команды будут работать.
-set keymap=russian-jcukenwin
-set iminsert=0
-set imsearch=0
-
-" Настройки поиска
-set showmatch
-set hlsearch
-set incsearch
-set ignorecase
-
-" Открывать новые окна справа
-set splitright
-
-" Включаем проверку арфаграфии
-set spelllang=ru,en
-
-" Использовать темный фон
-set background=dark
-
-" Настройки фолдинга
-" Используем отступы на основе синтаксиса по-умолчанию
-" set foldmethod=syntax
-" Для текстовых файлов - на основе отступов
-" autocmd filetype txt set foldmethod=ident
-" Открытие/закрытие на пробел
-nnoremap <space> za
-
-
-" Более логичное действие Y, копирование до конца строки
-map Y y$
-
-
-" Специфичные настройки для некоторых типов файлов
-    " Отмечаем .h и .c файлы как файлы чистого си
-    autocmd BufRead, BufNewFile *.h,*.c set filetype=c.doxygen
-
-
-    " С/C++ файлы
-    " Расставлять отступы в стиле С
-    autocmd filetype c,cpp set cin
-
-
-    " .ino - файлы
-    autocmd filetype ino set cin
+    " Возможность переопределять настройки для проекта в локальных .vimrc
+    set exrc
     
-
-    " make-файл
-    " В make-файлах нам не нужно заменять табуляцию пробелам
-    autocmd filetype make set noexpandta
-    autocmd filetype make set noci
-     
-
-    " python-файл
-    " Не расставлять отступы в стиле 
-    autocmd filetype python set nocin 
-
-" Устанавливаем систему сборки
-if has('win32')
-    set makeprg=nmake
-    compiler msvc
-else
-    set makeprg=make
-    compiler gcc
-endif
-
-" Возможность переопределять настройки для проекта в локальных .vimrc
-set exrc
-" Запрет опасных команд в локальных .vimrc
-set secure
+    " Запрет опасных команд в локальных .vimrc
+    set secure
 
 
-" Настройки плагинов
-    " Airline
-    " Выбор темы
-    let g:airline_theme='simple'
-    " Включаем список табов по-умолчанию
-    let g:airline#extensions#tabline#enabled = 1
-    " Включаем панели по-умолчанию
-    set laststatus=2
-    " Включаем улучшенные шрифты
-    let g:airline_powerline_fonts = 1
-    " всегда показывать tabline
-    let g:airline#extensions#tabline#tab_min_count = 0
-    " отображать директорию только если открыт еще один файл со сходным именем
-    let g:airline#extensions#tabline#formatter = 'unique_tail'
+" -----------------------------------------------------------------------------
+" Пользовательские типы файлов
+" -----------------------------------------------------------------------------
+
+
+    autocmd BufNewFile,BufRead *.tmpl,*.tpl setfiletype html
+    autocmd BufNewFile,BufRead *.h,*.c setfiletype c
+    autocmd BufNewFile,BufRead *.ino setfiletype cpp
+
+
+" -----------------------------------------------------------------------------
+" Пользовательские скрипты
+" -----------------------------------------------------------------------------
+
+
+    " Автоматическое создание include guard'ов
+    function! InsIncludeGuard()
+        let guard_name = "_" . substitute(toupper(expand('%:t')), "\\.", "_", "g") . "_"
+        execute "normal! 1GO"
+        call setline(".", "#ifndef " . guard_name)
+        execute "normal! o"
+        call setline(".", "#define " . guard_name)
+        execute "normal! Go"
+        call setline(".", "#endif // " . guard_name)
+        execute "normal! o"
+    endfunction
+
+    " Вставка #pragma once в начало файла
+    function! InsPragmaOnce()
+        execute "normal! 1GO"
+        call setline(".", "#pragma once")
+        execute "normal! o"
+        execute "normal! o"
+        execute "normal! O"
+    endfunction
+
+    " Автоматически применять InsIncludeGuard к новым хедерам c++ (.h++, .hpp)
+    autocmd BufNewFile *.{hpp,h++} call InsPragmaOnce()
+    " Автоматически применять InsIncludeGuard к новым хедерам си (.h)
+    autocmd BufNewFile *.{h} call InsIncludeGuard()
+
+
+
+" -----------------------------------------------------------------------------
+" Непечатные символы
+" -----------------------------------------------------------------------------
+
+
+    " Комбинация для скрытия/отображения
+    "                                             [ <leader> <leader> l ]
+    nmap <leader><leader>l :set list!<CR>
+
+    " Внешний вид непечатных символов
+    " tab - два символа для отображения табуляции (первый символ и заполнитель)
+    " eol - символ для отображения конца строки
+    " precedes - индикатор продолжения строки в лево
+    " extends - индикатор продолжения строки в право
+    set listchars=tab:▸·,eol:¬,precedes:«,extends:»,space:\.
+
+
+" -----------------------------------------------------------------------------
+" Настройки шелла
+" -----------------------------------------------------------------------------
+
+
+    " Установим шелл
+    set shell=sh
+    " Автоподстановка в шелле
+    set wildmode=longest:list,full
+
+
+" -----------------------------------------------------------------------------
+" Работа с длинными строками 
+" -----------------------------------------------------------------------------
+
+
+    " Включить перенос(визуальный) по словам, если длина строки слишком велика
+    set wrap
+    " Запретить 'разрывание' длинных строк
+    set nolbr
+    " В текстовых документов запретить разрывание
+    autocmd FileType txt setlocal nolbr
+    " В случае наличия неразорванной длинной строки перемещение курсора вверх и
+    " вниз работает более привычно
+    nmap j gj
+    nmap <DOWN> gj
+    nmap k gk
+    nmap <UP> gk
+
+    " Ширина строки
+    set textwidth=80
+    " Для лиспа принимаем ширину окна в 120 символов
+    autocmd FileType lisp setlocal textwidth=120
+
+
+" -----------------------------------------------------------------------------
+" Настройки буфера обмена, копирования и вставки
+" -----------------------------------------------------------------------------
+
+    " TODO
+
+    " Используем системный буфер в качестве дефолтного
+    set clipboard=unnamed
+
+" -----------------------------------------------------------------------------
+" Настройки мыши
+" -----------------------------------------------------------------------------
+
+
+    " Включить мышь
+    set mouse=a
     
-    
-    " Clang-completer                                                                
-    " Включить дополнительные подсказки (аргументы функций, шаблонов и т.д.)        
-    let g:clang_snippets=1                                                          
-    " Использоать ultisnips для дополнительных подсказок (чтобы подсказки шаблонов  
-    " автогенерации были в выпадающих меню)                                         
-    let g:clang_snippets_engine='ultisnips'                                      
-    " Периодически проверять проект на ошибки                                       
-    let g:clang_periodic_quickfix=1                                                 
-    " Подсвечивать ошибки                                                           
-    let g:clang_hl_errors=1
-    " Автоматически закрывать окно подсказок после выбора подсказки                 
-    let g:clang_close_preview=1   
-    " Автоматически показывать подсказки
-    let g:clang_complete_auto=1
-    " Путь к библиотеке
-    let g:clang_library_path='/usr/lib/llvm-3.8/lib/libclang-3.8.so.1'               
+    " Поиск с помощью мыши
+    "                                                 [ Shift + ПКМ ]
+    "                                                 [ Shift + ЛКМ ]
+    set mousemodel=extend
 
+
+" -----------------------------------------------------------------------------
+" Отступы и табуляция
+" -----------------------------------------------------------------------------
+
+    
+    " Ширина символа табуляции в пробелах
+    set ts=4
+    " Количество пробелов, добавляемых при нажатии <Tab>
+    set sts=4
+    " По-умолчанию заменять симвлы табуляции соответствующим количеством
+    " пробелов
+    set et
+    " На какое количество символов сдвигают команды > и <
+    set sw=4
+    " 'Умные' отступы
+    set smarttab
+
+
+    " Специфичные настройки для различных типов файлов
+    autocmd FileType php setlocal ts=4 sts=4 sw=4 noet
+    autocmd FileType python setlocal ts=4 sts=4 sw=4 et
+    autocmd FileType javascript setlocal ts=4 sts=4 sw=4 noet
+
+    autocmd FileType html setlocal ts=2 sts=2 sw=2 noet
+    autocmd FileType xhtml setlocal ts=2 sts=2 sw=2 noet
+    autocmd FileType xml setlocal ts=2 sts=2 sw=2 noet
+    autocmd FileType css setlocal ts=2 sts=2 sw=2 noet
+
+    autocmd FileType vim setlocal ts=4 sts=4 sw=4 et
+    autocmd FileType apache setlocal ts=2 sts=2 sw=2 noet
+    autocmd FileType yaml setlocal ts=2 sts=2 sw=2 et
+
+    autocmd FileType c,cpp set cin
+
+    autocmd FileType txt setlocal nosmarttab autoident
+
+
+" -----------------------------------------------------------------------------
+" Кодировки и раскладка клавиатуры
+" -----------------------------------------------------------------------------
+
+
+    " Дефолтная кодировка
+    set ffs=unix,dos,mac
+    set fencs=utf-8,cp1251,koi8-r,ucs-2,cp866 
+
+    " Настраиваем переключение раскладок клавиатуры по <C-^>
+    set keymap=russian-jcukenwin
+
+    " Раскладка по умолчанию - английская
+    set iminsert=0
+
+" -----------------------------------------------------------------------------
+" Оформление
+" -----------------------------------------------------------------------------
+
+
+    " Использовать темный фон
+    set background=dark 
+
+    " Открывать новые окна справа
+    set splitright
+
+    " Настройка Airline
+        " Выбор темы
+        let g:airline_theme='simple'
+        " Включаем список табов по-умолчанию
+        let g:airline#extensions#tabline#enabled = 1
+        " Включаем панели по-умолчанию
+        set laststatus=2
+        " Включаем улучшенные шрифты
+        let g:airline_powerline_fonts = 1
+        " всегда показывать tabline
+        let g:airline#extensions#tabline#tab_min_count = 0
+        " отображать директорию только если открыт еще один файл со сходным именем
+        let g:airline#extensions#tabline#formatter = 'unique_tail'
+
+    
+" -----------------------------------------------------------------------------
+" Поиск
+" -----------------------------------------------------------------------------
+
+
+    " Отключение курсора на совпадающей парной скобке
+    set noshowmatch
+
+    " По-умолчанию отключить подсветку найденных совпадений
+    set nohlsearch
+    " Клавиша, позволяющая включать и отключать подсветку
+    "                                               [ <leader> <leader> h ]
+    nmap <leader><leader>h :set hlsearch!<CR>
+    
+    " Курсор перемещается к найденному слову в процессе набора
+    set incsearch
+    
+    " Не игнорировать регистр по-умолчанию
+    set noignorecase
+    " Отключаем умное определение регистра
+    set nosmartcase
+    " В текстовых файлах, а также в в файлах исходного кода для 
+    " регистро-независимых языков игнорировать регист
+    autocmd FileType txt,lisp,html,yaml,apache set ignorecase
+
+
+" -----------------------------------------------------------------------------
+" Фолдинг
+" -----------------------------------------------------------------------------
+
+    " TODO
+
+
+" -----------------------------------------------------------------------------
+" Проверка орфографии
+" -----------------------------------------------------------------------------
+
+    " TODO
+
+
+" -----------------------------------------------------------------------------
+" Сниппеты
+" -----------------------------------------------------------------------------
 
     " UltiSnips
-    let g:UltiSnipsExpandTrigger="<tab>"
+    let g:UltiSnipsExpandTrigger="<C-CR>"
+    let g:UltiSnipsListSnippets="<C-TAB>"
+    let g:UltiSnipsJumpForwardTrigger="<C-RIGHT>"
+    let g:UltiSnipsJumpBackwardTrigger="<C-LEFT>"
+
+" -----------------------------------------------------------------------------
+" Комментирование кода (NerdCommenter)
+" -----------------------------------------------------------------------------
 
 
-    " NerdCommenter
     " Добавлять пробел перед текстом комментария
     let g:NERDSpaceDelims = 1
     " Use compact syntax for prettified multi-line comments
@@ -247,62 +366,66 @@ set secure
     let g:NERDTrimTrailingWhitespace = 1
 
 
+" -----------------------------------------------------------------------------
+" Дополнительные окна
+" -----------------------------------------------------------------------------
 
-    " NerdTree
-    " Показывать панель NerdТree по клавише ctrl + n
+
+    " Показывать панель NerdTree по клавише
+    "                                                             [ <F5>  ]
     map <F5> :NERDTreeToggle<CR> 
 
 
     " TagBar
+    "                                                             [ <F6>  ]
     map <F6> :TagbarToggle<CR>
 
     " GitGutter
+    "                                                             [ <F7>  ]
     map <F7> :GitGutterToggle<CR>
 
 
-    " slimv
+" -----------------------------------------------------------------------------
+" SLIMV
+" -----------------------------------------------------------------------------
+
+
     " Не выставлять закрывающие скобки автоматически
     let g:paredit_mode=0
     " включаем 'радужные' скобки
     let g:lisp_rainbow=1
 
 
-    " Настройка комбинаций клавиш для YouCompleteMe
+" -----------------------------------------------------------------------------
+" Настройка комбинаций клавиш для YouCompleteMe
+" -----------------------------------------------------------------------------
+
+
+    " Показать результаты диагностики 
+    "                                                        [ <leader>yw ]
     nnoremap <leader>yw  :YcmShowDetailedDiagnostic<CR>
 
-    nnoremap <leader>ygg :YouCompleteMeGoTo<CR>
-    nnoremap <leader>ygd :YouCompleteMeGoToDeclaration<CR>
-    nnoremap <leader>ygp :YouCompleteMeGoToDefinition<CR>
-    nnoremap <leader>ygi :YouCompleteMeGoToInclude<CR>
+    " Пейти к ...
+    "                                                        [ <leader>yt ]
+    nnoremap <leader>yg :YouCompleteMeGoTo<CR>
 
+    " Перейти к объявлению
+    "                                                        [ <leader>yc ]
+    nnoremap <leader>yc :YouCompleteMeGoToDeclaration<CR>
+
+    " Перейти к определению
+    "                                                        [ <leader>yf ]
+    nnoremap <leader>yf :YouCompleteMeGoToDefinition<CR>
+
+    " Перейти к включению
+    "                                                        [ <leader>yi ]
+    nnoremap <leader>yi :YouCompleteMeGoToInclude<CR>
+
+    " Получить документацию
+    "                                                        [ <leader>yd ]
     nnoremap <leader>yd  :YouCompleteMeGetDoc<CR>
 
-    nnoremap <leader>yrn :YouCompleteMeRefactorRename<CR>
-
-
-" Автоматическое создание include guard'ов
-function! InsIncludeGuard()
-    let guard_name = "_" . substitute(toupper(expand('%:t')), "\\.", "_", "g") . "_"
-    execute "normal! 1GO"
-    call setline(".", "#ifndef " . guard_name)
-    execute "normal! o"
-    call setline(".", "#define " . guard_name)
-    execute "normal! Go"
-    call setline(".", "#endif // " . guard_name)
-    execute "normal! o"
-endfunction
-
-" Вставка #pragma once в начало файла
-function! InsPragmaOnce()
-    execute "normal! 1GO"
-    call setline(".", "#pragma once")
-    execute "normal! o"
-    execute "normal! o"
-    execute "normal! O"
-endfunction
-
-" Автоматически применять InsIncludeGuard к новым хедерам (.h++, .hpp)
-autocmd BufNewFile *.{hpp,h++} call InsPragmaOnce()
-" Автоматически применять InsIncludeGuard к новым хедерам (.h)
-autocmd BufNewFile *.{h} call InsIncludeGuard()
+    " Переименовать
+    "                                                        [ <leader>yn ]
+    nnoremap <leader>yn :YouCompleteMeRefactorRename<CR>
 
