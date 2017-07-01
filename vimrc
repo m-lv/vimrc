@@ -13,7 +13,7 @@ Plugin 'VundleVim/Vundle.vim'
     " Автоматически закрывать открытые скобки
     " !! при нажатии стрелки вверх в режиме ввода вставляет 
     " в буфер мусор
-    Plugin 'https://github.com/Townk/vim-autoclose.git'
+    " Plugin 'https://github.com/Townk/vim-autoclose.git'
 
     " Визуальное оформление
     Plugin 'https://github.com/vim-airline/vim-airline.git'
@@ -148,7 +148,7 @@ filetype plugin indent on    " required
 
 
     " Комбинация для скрытия/отображения
-    "                                             [ <leader> <leader> l ]
+    "                                                 [ Leader + leader + l ]
     nmap <leader><leader>l :set list!<CR>
 
     " Внешний вид непечатных символов
@@ -198,10 +198,22 @@ filetype plugin indent on    " required
 " Настройки буфера обмена, копирования и вставки
 " -----------------------------------------------------------------------------
 
-    " TODO
 
     " Используем системный буфер в качестве дефолтного
     set clipboard=unnamed
+
+    " Комбинации для копирования и вставки через системный буфер
+    "  1. копировать
+    "                                                   [ Ctrl + Shift + y  ]
+    map <C-S-Y> "+y
+    "  2. вставить
+    "                                                   [ Ctrl + Shift + p  ]
+    map <C-S-P> "+p
+    imap <C-S-P> <ESC>l"+pi
+    "  3. вырезать
+    "                                                   [ Ctrl + Shift + d  ]
+    map <C-S-D> "+d
+
 
 " -----------------------------------------------------------------------------
 " Настройки мыши
@@ -212,8 +224,8 @@ filetype plugin indent on    " required
     set mouse=a
     
     " Поиск с помощью мыши
-    "                                                 [ Shift + ПКМ ]
-    "                                                 [ Shift + ЛКМ ]
+    "                                                         [ Shift + ПКМ ]
+    "                                                         [ Shift + ЛКМ ]
     set mousemodel=extend
 
 
@@ -263,7 +275,8 @@ filetype plugin indent on    " required
     set ffs=unix,dos,mac
     set fencs=utf-8,cp1251,koi8-r,ucs-2,cp866 
 
-    " Настраиваем переключение раскладок клавиатуры по <C-^>
+    " Настраиваем переключение раскладок клавиатуры по 
+    "                                                           [ Ctrl + ^ ]
     set keymap=russian-jcukenwin
 
     " Раскладка по умолчанию - английская
@@ -306,7 +319,7 @@ filetype plugin indent on    " required
     " По-умолчанию отключить подсветку найденных совпадений
     set nohlsearch
     " Клавиша, позволяющая включать и отключать подсветку
-    "                                               [ <leader> <leader> h ]
+    "                                                 [ Leader + Leader + h ]
     nmap <leader><leader>h :set hlsearch!<CR>
     
     " Курсор перемещается к найденному слову в процессе набора
@@ -372,16 +385,16 @@ filetype plugin indent on    " required
 
 
     " Показывать панель NerdTree по клавише
-    "                                                             [ <F5>  ]
+    "                                                                 [ F5 ]
     map <F5> :NERDTreeToggle<CR> 
 
 
     " TagBar
-    "                                                             [ <F6>  ]
+    "                                                                 [ F6 ]
     map <F6> :TagbarToggle<CR>
 
     " GitGutter
-    "                                                             [ <F7>  ]
+    "                                                                 [ F7 ]
     map <F7> :GitGutterToggle<CR>
 
 
@@ -402,30 +415,30 @@ filetype plugin indent on    " required
 
 
     " Показать результаты диагностики 
-    "                                                        [ <leader>yw ]
+    "                                                      [ Leader + y + w ]
     nnoremap <leader>yw  :YcmShowDetailedDiagnostic<CR>
 
     " Пейти к ...
-    "                                                        [ <leader>yt ]
+    "                                                      [ Leader + y + t ]
     nnoremap <leader>yg :YouCompleteMeGoTo<CR>
 
     " Перейти к объявлению
-    "                                                        [ <leader>yc ]
+    "                                                      [ Leader + y + c ]
     nnoremap <leader>yc :YouCompleteMeGoToDeclaration<CR>
 
     " Перейти к определению
-    "                                                        [ <leader>yf ]
+    "                                                      [ Leader + y + f ]
     nnoremap <leader>yf :YouCompleteMeGoToDefinition<CR>
 
     " Перейти к включению
-    "                                                        [ <leader>yi ]
+    "                                                      [ Leader + y + i ]
     nnoremap <leader>yi :YouCompleteMeGoToInclude<CR>
 
     " Получить документацию
-    "                                                        [ <leader>yd ]
+    "                                                      [ Leader + y + d ]
     nnoremap <leader>yd  :YouCompleteMeGetDoc<CR>
 
     " Переименовать
-    "                                                        [ <leader>yn ]
+    "                                                      [ Leader + y + n ]
     nnoremap <leader>yn :YouCompleteMeRefactorRename<CR>
 
