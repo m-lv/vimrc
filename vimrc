@@ -1,91 +1,79 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+set nocompatible              " be improved, required
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/neobundle.vim
-call neobundle#begin(expand('~/.vim/bundle/'))
 
-" Let NeoBundle manage NeoBundle
-NeoBundleFetch 'Shougo/neobundle.vim'
+" Установить при еноюходимости Plug.vim
+if empty(glob("~/.vim/autoload/plug.vim"))
+    execute '!curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim'
+endif
+
+
+" Specify a directory for plugins
+call plug#begin('~/.vim/plugged')
 
 " user defined plugins
 
-    NeoBundle 'Shougo/vimproc.vim', {
-    \ 'build' : {
-    \     'windows' : 'tools\\update-dll-mingw',
-    \     'cygwin' : 'make -f make_cygwin.mak',
-    \     'mac' : 'make',
-    \     'linux' : 'make',
-    \     'unix' : 'gmake',
-    \    },
-    \ }
-
-
     " Визуальное оформление
-    NeoBundle 'https://github.com/vim-airline/vim-airline.git'
-    NeoBundle 'https://github.com/vim-airline/vim-airline-themes.git'
+    Plug 'https://github.com/vim-airline/vim-airline.git'
+    Plug 'https://github.com/vim-airline/vim-airline-themes.git'
 
 
     " Интеграция с git, загружать при открытии соответствующего окна
-    NeoBundleLazy 'https://github.com/airblade/vim-gitgutter.git', { 
-    \    'augroup' : 'GitGutter' 
+    Plug 'https://github.com/airblade/vim-gitgutter.git', {
+        \ 'on' : 'GitGutterToggle'
     \ }
-    NeoBundleSource 'gitgutter'
 
 
     " Показывать теги для текущего файла, загружать при открытии соответствующего окна
-    NeoBundle 'https://github.com/majutsushi/tagbar.git', { 'augroup' : 'Tagbar' }
-    NeoBundleSource 'tagbar'
+    Plug 'https://github.com/majutsushi/tagbar.git'
 
 
     " Множественное выделение, как в SublimeText
-    NeoBundle 'https://github.com/terryma/vim-multiple-cursors.git'
+    Plug 'https://github.com/terryma/vim-multiple-cursors.git'
 
 
     " Автодополнение, подсказки при вводе, рефакторинг и т.д.для некоторых ЯП
     " Поддержка:
     "   - C-family (pure c, c++, objective c)
     "   - C#
-    "   - Go
-    "   - Rust
-    "   - js
-    NeoBundleLazy 'Valloric/YouCompleteMe', { 
-    \            'build' : {
-    \                'linux' : '.git submodule update --init --recursive; /install.py --clang-completer --omnisharp-completer --gocode-completer --racer-completer --tern-completer'
-    \             }
+    Plug 'Valloric/YouCompleteMe', {
+        \ 'for': ['c', 'cpp', 'cs'],
+        \ 'do': 'git submodule update --init --recursive; ./install.py --clang-completer --omnisharp-completer'
     \ }
-    " Плагиг загружается только при открытии соответствующего типа фалов
-    autocmd FileType c,cpp,cs,go,rust,js NeoBundleSource YouCompleteMe
-    NeoBundleLazy 'rdnetto/YCM-Generator' " генерация конфигурационного файла
-    autocmd FileType c,cpp NeoBundleSource YCM-Generator
+    " генерация конфигурационного файла
+    Plug 'rdnetto/YCM-Generator', {
+        \ 'for': ['c', 'cpp'],
+        \ 'branch' : 'stable'
+    \ } 
 
 
     " Генерация кода
-    NeoBundle 'SirVer/ultisnips'
-    NeoBundle 'honza/vim-snippets'
+    Plug 'SirVer/ultisnips'
+    Plug 'honza/vim-snippets'
 
 
     " Посветка синтаксиса в pure c/c++/objective c
-    " NeoBundle 'https://github.com/jeaye/color_coded.git'
+    " Plug 'https://github.com/jeaye/color_coded.git'
 
 
     " Удобое комментирование
-    NeoBundle 'scrooloose/nerdcommenter'
+    Plug 'scrooloose/nerdcommenter'
 
 
     " Дерево проекта  + взаимодействе с гитом
-    NeoBundleLazy 'scrooloose/nerdtree', { 'augroup' : 'NERDTree' }
-    NeoBundleLazy 'Xuyuanp/nerdtree-git-plugin', { 'augroup' : ['nerdtreegitplugin', 'AddHighlighting'] }
-    NeoBundleSource 'nerdtree'
-    NeoBundleSource 'nerdtree-git-plugin'
+    Plug 'scrooloose/nerdtree', {
+        \ 'on': 'NERDTreeToggle'
+    \ }
 
     " lisp slimv
-    NeoBundleLazy 'https://github.com/kovisoft/slimv.git'
-    autocmd FileType lisp NeoBundleSource slimv
+    Plug 'https://github.com/kovisoft/slimv.git', {
+        \ 'for': 'lisp'
+    \ }
+
 
 " All of your Plugins must be added before the following line
 
-call neobundle#end()         " required
+" Initialize plugin system
+call plug#end()
 filetype plugin indent on    " required
 
 
@@ -223,7 +211,6 @@ filetype plugin indent on    " required
     "  2. вставить
     "                                                   [ Ctrl + Shift + p  ]
     map <C-S-P> "+p
-    imap <C-S-P> <ESC>l"+pi
     "  3. вырезать
     "                                                   [ Ctrl + Shift + d  ]
     map <C-S-D> "+d
@@ -258,7 +245,7 @@ filetype plugin indent on    " required
     " На какое количество символов сдвигают команды > и <
     set sw=4
     " 'Умные' отступы
-    set smarttab
+    set nosmarttab
 
 
     " Специфичные настройки для различных типов файлов
@@ -275,9 +262,8 @@ filetype plugin indent on    " required
     autocmd FileType apache setlocal ts=2 sts=2 sw=2 noet
     autocmd FileType yaml setlocal ts=2 sts=2 sw=2 et
 
-    autocmd FileType c,cpp set cin
+    autocmd FileType c,cpp setlocal cin
 
-    autocmd FileType txt setlocal nosmarttab autoident
 
 
 " -----------------------------------------------------------------------------
