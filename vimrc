@@ -1,11 +1,10 @@
-set nocompatible              " be improved, required
+set nocompatible              " be improvquired
 
 
 " Установить при еноюходимости Plug.vim
 if empty(glob("~/.vim/autoload/plug.vim"))
     execute '!curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim'
 endif
-
 
 " Specify a directory for plugins
 call plug#begin('~/.vim/plugged')
@@ -14,22 +13,47 @@ call plug#begin('~/.vim/plugged')
 
     " Визуальное оформление
     Plug 'https://github.com/vim-airline/vim-airline.git'
-    Plug 'https://github.com/vim-airline/vim-airline-themes.git'
+    Plug 'https://github.com/morhetz/gruvbox'
 
+    " Улучшение работы с текстовыми объектами
+    Plug 'https://github.com/paradigm/TextObjectify'
+
+    " Возврат к английской раскладке после insert mod'а
+    " *Требует xkb-switch TODO
+    " Plug 'https://github.com/lyokha/vim-xkbswitch'
+
+    " Автодополнение при интеграции с tmux'ом
+    " Plug 'https://github.com/wellle/tmux-complete.vim'
+
+    " Радужные скобки
+    Plug 'https://github.com/kien/rainbow_parentheses.vim'
 
     " Интеграция с git, загружать при открытии соответствующего окна
     Plug 'https://github.com/airblade/vim-gitgutter.git', {
         \ 'on' : 'GitGutterToggle'
     \ }
 
+    " Позволяет открыть выделенный фрагмент в новом окне, отредактировать, а
+    " потом снова синхонизировать с остальным текстом
+    Plug 'https://github.com/chrisbra/NrrwRgn'
+
+    " Улучшенное поведение .
+    Plug 'https://github.com/tpope/vim-repeat'
+
+    " Стартовый экран
+    Plug 'https://github.com/mhinz/vim-startify'
+
+    " Работа со скобками и подобными парными сущностями
+    Plug 'https://github.com/tpope/vim-surround'
+
+    " Поиск последовательностей из двух символов и перемещение между ними
+    Plug 'https://github.com/justinmk/vim-sneak'
 
     " Показывать теги для текущего файла, загружать при открытии соответствующего окна
     Plug 'https://github.com/majutsushi/tagbar.git'
 
-
     " Множественное выделение, как в SublimeText
     Plug 'https://github.com/terryma/vim-multiple-cursors.git'
-
 
     " Автодополнение, подсказки при вводе, рефакторинг и т.д.для некоторых ЯП
     " Поддержка:
@@ -41,15 +65,13 @@ call plug#begin('~/.vim/plugged')
     \ }
     " генерация конфигурационного файла
     Plug 'rdnetto/YCM-Generator', {
-        \ 'for': ['c', 'cpp'],
+        \ 'on' : 'YcmGenerateConfig',
         \ 'branch' : 'stable'
     \ } 
-
 
     " Генерация кода
     Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
-
 
     " Посветка синтаксиса в pure c/c++/objective c
     " Plug 'https://github.com/jeaye/color_coded.git'
@@ -58,17 +80,15 @@ call plug#begin('~/.vim/plugged')
     " Удобое комментирование
     Plug 'scrooloose/nerdcommenter'
 
-
     " Дерево проекта  + взаимодействе с гитом
     Plug 'scrooloose/nerdtree', {
         \ 'on': 'NERDTreeToggle'
     \ }
 
-    " lisp slimv
+    " CommonLisp IDE -- SLIMV
     Plug 'https://github.com/kovisoft/slimv.git', {
         \ 'for': 'lisp'
     \ }
-
 
 " All of your Plugins must be added before the following line
 
@@ -94,11 +114,29 @@ filetype plugin indent on    " required
     " Более логичное действие Y, копирование до конца строки
     map Y y$
 
+    " Использовать клавиши k и K для перемещения между окнами
+    "                                                                  [ k ]
+    "                                                                  [ K ]
+    nnoremap k <C-W>w 
+    nnoremap K <C-W>W 
+
     " Возможность переопределять настройки для проекта в локальных .vimrc
     set exrc
     
     " Запрет опасных команд в локальных .vimrc
     set secure
+
+    " В режиме выделения повесить функционал плагина vim.surround на клавишу s
+    "                                                                   [ s ]
+    vmap s S
+
+    " Редактировать выделенный текст в новом окне
+    "                                                 [ Leader + Leader + w ]
+    vmap <leader><leader>w :NR<CR>
+
+    " Включить/выключить 'радужные' скобки
+    "                                                 [ Leader + Leader + p ]
+    nnoremap <leader><leader>p :RainbowParenthesesToggle<CR>
 
 
 " -----------------------------------------------------------------------------
@@ -151,7 +189,7 @@ filetype plugin indent on    " required
 
     " Комбинация для скрытия/отображения
     "                                                 [ Leader + leader + l ]
-    nmap <leader><leader>l :set list!<CR>
+    nmap <leader><leader>l :set list!<CR>:
 
     " Внешний вид непечатных символов
     " tab - два символа для отображения табуляции (первый символ и заполнитель)
@@ -181,13 +219,9 @@ filetype plugin indent on    " required
     set wrap
     " Запретить 'разрывание' длинных строк
     set nolbr
-    " В текстовых документов запретить разрывание
-    autocmd FileType txt setlocal nolbr
     " В случае наличия неразорванной длинной строки перемещение курсора вверх и
     " вниз работает более привычно
-    nmap j gj
     nmap <DOWN> gj
-    nmap k gk
     nmap <UP> gk
 
     " Ширина строки
@@ -244,7 +278,7 @@ filetype plugin indent on    " required
     set et
     " На какое количество символов сдвигают команды > и <
     set sw=4
-    " 'Умные' отступы
+    " Отключить 'Умные' отступы
     set nosmarttab
 
 
@@ -275,9 +309,14 @@ filetype plugin indent on    " required
     set ffs=unix,dos,mac
     set fencs=utf-8,cp1251,koi8-r,ucs-2,cp866 
 
-    " Настраиваем переключение раскладок клавиатуры по 
-    "                                                           [ Ctrl + ^ ]
-    set keymap=russian-jcukenwin
+    " Настраиваем переключение раскладок клавиатуры по C-^
+    "   !! Неудобно
+    " set keymap=russian-jcukenwin
+
+    " При выходе из режима вставки включать английскую раскладку
+    " let g:XkbSwitchEnabled = 1
+
+    " TODO
 
     " Раскладка по умолчанию - английская
     set iminsert=0
@@ -286,16 +325,22 @@ filetype plugin indent on    " required
 " Оформление
 " -----------------------------------------------------------------------------
 
+    " Установить тёмый фон
+    set background=dark
 
-    " Использовать темный фон
-    set background=dark 
+    " Настройка Gruvbox
+        " Включить наклонный шрифт
+        let g:gruvbox_italic = 1
+        " Включить наклонный шрифт
+        let g:gruvbox_termcolor = 256
+        " Контрастность
+        let g:gruvbox_contrast_dark = 'hard'
 
-    " Открывать новые окна справа
-    set splitright
+    colorscheme gruvbox
 
     " Настройка Airline
         " Выбор темы
-        let g:airline_theme='simple'
+        let g:airline_theme='gruvbox'
         " Включаем список табов по-умолчанию
         let g:airline#extensions#tabline#enabled = 1
         " Включаем панели по-умолчанию
@@ -306,8 +351,7 @@ filetype plugin indent on    " required
         let g:airline#extensions#tabline#tab_min_count = 0
         " отображать директорию только если открыт еще один файл со сходным именем
         let g:airline#extensions#tabline#formatter = 'unique_tail'
-
-    
+        
 " -----------------------------------------------------------------------------
 " Поиск
 " -----------------------------------------------------------------------------
@@ -335,6 +379,33 @@ filetype plugin indent on    " required
 
 
 " -----------------------------------------------------------------------------
+" Перемещение по тексту и коду
+" -----------------------------------------------------------------------------
+
+
+    " Улучшенное поведение f, F, t и T
+    map f <Plug>Sneak_f
+    map F <Plug>Sneak_F
+    map t <Plug>Sneak_t
+    map T <Plug>Sneak_T
+
+    " Поиск последовательности из 2 симовлов
+    "                                                                   [ h ]
+    "                                                                   [ H ]
+    map h  <Plug>Sneak_s
+    map H  <Plug>Sneak_S
+
+
+" -----------------------------------------------------------------------------
+" Метки
+" -----------------------------------------------------------------------------
+
+
+    " TODO
+
+
+
+" -----------------------------------------------------------------------------
 " Фолдинг
 " -----------------------------------------------------------------------------
 
@@ -344,6 +415,7 @@ filetype plugin indent on    " required
 " -----------------------------------------------------------------------------
 " Проверка орфографии
 " -----------------------------------------------------------------------------
+
 
     " TODO
 
@@ -410,35 +482,7 @@ filetype plugin indent on    " required
 
 
 " -----------------------------------------------------------------------------
-" Настройка комбинаций клавиш для YouCompleteMe
+" YouCompleteMe
 " -----------------------------------------------------------------------------
 
-
-    " Показать результаты диагностики 
-    "                                                      [ Leader + y + w ]
-    nnoremap <leader>yw  :YcmShowDetailedDiagnostic<CR>
-
-    " Пейти к ...
-    "                                                      [ Leader + y + t ]
-    nnoremap <leader>yg :YouCompleteMeGoTo<CR>
-
-    " Перейти к объявлению
-    "                                                      [ Leader + y + c ]
-    nnoremap <leader>yc :YouCompleteMeGoToDeclaration<CR>
-
-    " Перейти к определению
-    "                                                      [ Leader + y + f ]
-    nnoremap <leader>yf :YouCompleteMeGoToDefinition<CR>
-
-    " Перейти к включению
-    "                                                      [ Leader + y + i ]
-    nnoremap <leader>yi :YouCompleteMeGoToInclude<CR>
-
-    " Получить документацию
-    "                                                      [ Leader + y + d ]
-    nnoremap <leader>yd  :YouCompleteMeGetDoc<CR>
-
-    " Переименовать
-    "                                                      [ Leader + y + n ]
-    nnoremap <leader>yn :YouCompleteMeRefactorRename<CR>
 
