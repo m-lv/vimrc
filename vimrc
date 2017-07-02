@@ -2,77 +2,91 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+set rtp+=~/.vim/bundle/neobundle.vim
+call neobundle#begin(expand('~/.vim/bundle/'))
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+" Let NeoBundle manage NeoBundle
+NeoBundleFetch 'Shougo/neobundle.vim'
 
 " user defined plugins
 
-    " Автоматически закрывать открытые скобки
-    " !! при нажатии стрелки вверх в режиме ввода вставляет 
-    " в буфер мусор
-    " Plugin 'https://github.com/Townk/vim-autoclose.git'
+    NeoBundle 'Shougo/vimproc.vim', {
+    \ 'build' : {
+    \     'windows' : 'tools\\update-dll-mingw',
+    \     'cygwin' : 'make -f make_cygwin.mak',
+    \     'mac' : 'make',
+    \     'linux' : 'make',
+    \     'unix' : 'gmake',
+    \    },
+    \ }
+
 
     " Визуальное оформление
-    Plugin 'https://github.com/vim-airline/vim-airline.git'
-    Plugin 'https://github.com/vim-airline/vim-airline-themes.git'
-
-    " Интеграция с git
-    Plugin 'https://github.com/airblade/vim-gitgutter.git'
+    NeoBundle 'https://github.com/vim-airline/vim-airline.git'
+    NeoBundle 'https://github.com/vim-airline/vim-airline-themes.git'
 
 
-    " Показывать теги для текущего файла
-    Plugin 'https://github.com/majutsushi/tagbar.git'
+    " Интеграция с git, загружать при открытии соответствующего окна
+    NeoBundleLazy 'https://github.com/airblade/vim-gitgutter.git', { 
+    \    'augroup' : 'GitGutter' 
+    \ }
+    NeoBundleSource 'gitgutter'
+
+
+    " Показывать теги для текущего файла, загружать при открытии соответствующего окна
+    NeoBundle 'https://github.com/majutsushi/tagbar.git', { 'augroup' : 'Tagbar' }
+    NeoBundleSource 'tagbar'
 
 
     " Множественное выделение, как в SublimeText
-    Plugin 'https://github.com/terryma/vim-multiple-cursors.git'
+    NeoBundle 'https://github.com/terryma/vim-multiple-cursors.git'
 
 
-    " Автодополнение, подсказки при вводе, рефакторинг и т.д.для с++
-    Plugin 'Valloric/YouCompleteMe' 
-    Plugin 'rdnetto/YCM-Generator' " генерация конфигурационного файла
+    " Автодополнение, подсказки при вводе, рефакторинг и т.д.для некоторых ЯП
+    " Поддержка:
+    "   - C-family (pure c, c++, objective c)
+    "   - C#
+    "   - Go
+    "   - Rust
+    "   - js
+    NeoBundleLazy 'Valloric/YouCompleteMe', { 
+    \            'build' : {
+    \                'linux' : '.git submodule update --init --recursive; /install.py --clang-completer --omnisharp-completer --gocode-completer --racer-completer --tern-completer'
+    \             }
+    \ }
+    " Плагиг загружается только при открытии соответствующего типа фалов
+    autocmd FileType c,cpp,cs,go,rust,js NeoBundleSource YouCompleteMe
+    NeoBundleLazy 'rdnetto/YCM-Generator' " генерация конфигурационного файла
+    autocmd FileType c,cpp NeoBundleSource YCM-Generator
 
 
     " Генерация кода
-    Plugin 'SirVer/ultisnips'
-    Plugin 'honza/vim-snippets'
+    NeoBundle 'SirVer/ultisnips'
+    NeoBundle 'honza/vim-snippets'
 
 
     " Посветка синтаксиса в pure c/c++/objective c
-    " Plugin 'https://github.com/jeaye/color_coded.git'
+    " NeoBundle 'https://github.com/jeaye/color_coded.git'
 
 
     " Удобое комментирование
-    Plugin 'scrooloose/nerdcommenter'
+    NeoBundle 'scrooloose/nerdcommenter'
 
 
-    " Дерево проекта
-    Plugin 'scrooloose/nerdtree'
-    " + взаимодействе с гитом
-    Plugin 'Xuyuanp/nerdtree-git-plugin'
-
+    " Дерево проекта  + взаимодействе с гитом
+    NeoBundleLazy 'scrooloose/nerdtree', { 'augroup' : 'NERDTree' }
+    NeoBundleLazy 'Xuyuanp/nerdtree-git-plugin', { 'augroup' : ['nerdtreegitplugin', 'AddHighlighting'] }
+    NeoBundleSource 'nerdtree'
+    NeoBundleSource 'nerdtree-git-plugin'
 
     " lisp slimv
-    Plugin 'https://github.com/kovisoft/slimv.git'
+    NeoBundleLazy 'https://github.com/kovisoft/slimv.git'
+    autocmd FileType lisp NeoBundleSource slimv
 
 " All of your Plugins must be added before the following line
 
-call vundle#end()            " required
+call neobundle#end()         " required
 filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
 
 
 " -----------------------------------------------------------------------------
