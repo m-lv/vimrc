@@ -46,6 +46,9 @@ call plug#begin('~/.vim/plugged')
     " Работа со скобками и подобными парными сущностями
     Plug 'https://github.com/tpope/vim-surround'
 
+    " Перемещение блоков текста вверх и вниз
+    Plug 'https://github.com/matze/vim-move'
+
     " Поиск последовательностей из двух символов и перемещение между ними
     Plug 'https://github.com/justinmk/vim-sneak'
 
@@ -254,6 +257,24 @@ filetype plugin indent on    " required
     "  3. вырезать
     "                                                   [ Ctrl + Shift + d  ]
     noremap <C-S-D> "+d
+
+
+" -----------------------------------------------------------------------------
+" Манипуляции со строками
+" -----------------------------------------------------------------------------
+
+
+    " Отключаем стандартные биндиги для плагина Move    
+    let g:move_map_keys = 0
+    " Настраиваем свои комбинации
+    "                                                          [ Ctrl + Up ]
+    "                                                        [ Ctrl + 2xUp ]
+    "                                                        [ Ctrl + Down ]
+    "                                                      [ Ctrl + 2xDown ]
+    vmap <C-UP> <Plug>MoveBlockUp
+    map <C-UP><C-UP> <Plug>MoveLineUp
+    vmap <C-DOWN> <Plug>MoveBlockDown
+    map <C-DOWN><C-DOWN> <Plug>MoveLineDown
 
 
 " -----------------------------------------------------------------------------
