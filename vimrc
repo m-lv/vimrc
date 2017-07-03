@@ -60,7 +60,7 @@ call plug#begin('~/.vim/plugged')
     "   - C-family (pure c, c++, objective c)
     "   - C#
     Plug 'Valloric/YouCompleteMe', {
-        \ 'for': ['c', 'cpp', 'cs'],
+        \ 'for': ['c', 'cpp', 'cs', 'objc', 'objcpp'],
         \ 'do': 'git submodule update --init --recursive; ./install.py --clang-completer --omnisharp-completer'
     \ }
     " генерация конфигурационного файла
@@ -74,7 +74,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'honza/vim-snippets'
 
     " Посветка синтаксиса в pure c/c++/objective c
-    " Plug 'https://github.com/jeaye/color_coded.git'
+    " Plug 'https://github.com/jeaye/color_coded.git', {
+    "     \ 'for' : ['c', 'cpp', 'objc']
+    " \ }
 
 
     " Удобое комментирование
@@ -87,7 +89,7 @@ call plug#begin('~/.vim/plugged')
 
     " CommonLisp IDE -- SLIMV
     Plug 'https://github.com/kovisoft/slimv.git', {
-        \ 'for': 'lisp'
+        \ 'for': ['lisp','clojure','hy','scheme','racket']
     \ }
 
 " All of your Plugins must be added before the following line
@@ -112,7 +114,7 @@ filetype plugin indent on    " required
     syntax on
 
     " Более логичное действие Y, копирование до конца строки
-    map Y y$
+    noremap Y y$
 
     " Использовать клавиши k и K для перемещения между окнами
     "                                                                  [ k ]
@@ -132,12 +134,7 @@ filetype plugin indent on    " required
 
     " Редактировать выделенный текст в новом окне
     "                                                 [ Leader + Leader + w ]
-    vmap <leader><leader>w :NR<CR>
-
-    " Включить/выключить 'радужные' скобки
-    "                                                 [ Leader + Leader + p ]
-    nnoremap <leader><leader>p :RainbowParenthesesToggle<CR>
-
+    vnoremap <leader><leader>w :NR<CR>
 
 " -----------------------------------------------------------------------------
 " Пользовательские типы файлов
@@ -189,7 +186,7 @@ filetype plugin indent on    " required
 
     " Комбинация для скрытия/отображения
     "                                                 [ Leader + leader + l ]
-    nmap <leader><leader>l :set list!<CR>:
+    noremap <leader><leader>l :set list!<CR>
 
     " Внешний вид непечатных символов
     " tab - два символа для отображения табуляции (первый символ и заполнитель)
@@ -197,6 +194,18 @@ filetype plugin indent on    " required
     " precedes - индикатор продолжения строки в лево
     " extends - индикатор продолжения строки в право
     set listchars=tab:▸·,eol:¬,precedes:«,extends:»,space:\.
+
+
+" -----------------------------------------------------------------------------
+" Работа с буферами
+" -----------------------------------------------------------------------------
+
+
+    " Комбинации клавишь для переключения между буферами
+    "                                                      [ Ctrl + Page Up ]
+    "                                                    [ Ctrl + Page Down ]
+    noremap <C-PAGEDOWN> :bnext<CR>
+    noremap <C-PAGEUP> :bprevious<CR>
 
 
 " -----------------------------------------------------------------------------
@@ -221,13 +230,13 @@ filetype plugin indent on    " required
     set nolbr
     " В случае наличия неразорванной длинной строки перемещение курсора вверх и
     " вниз работает более привычно
-    nmap <DOWN> gj
-    nmap <UP> gk
+    nnoremap <DOWN> gj
+    nnoremap <UP> gk
 
     " Ширина строки
     set textwidth=80
     " Для лиспа принимаем ширину окна в 120 символов
-    autocmd FileType lisp setlocal textwidth=120
+    autocmd FileType lisp,clojure,hy,scheme,racket setlocal textwidth=120
 
 
 " -----------------------------------------------------------------------------
@@ -235,19 +244,16 @@ filetype plugin indent on    " required
 " -----------------------------------------------------------------------------
 
 
-    " Используем системный буфер в качестве дефолтного
-    set clipboard=unnamed
-
     " Комбинации для копирования и вставки через системный буфер
     "  1. копировать
     "                                                   [ Ctrl + Shift + y  ]
-    map <C-S-Y> "+y
+    noremap <C-S-Y> "+y
     "  2. вставить
     "                                                   [ Ctrl + Shift + p  ]
-    map <C-S-P> "+p
+    noremap <C-S-P> "+p
     "  3. вырезать
     "                                                   [ Ctrl + Shift + d  ]
-    map <C-S-D> "+d
+    noremap <C-S-D> "+d
 
 
 " -----------------------------------------------------------------------------
@@ -263,11 +269,16 @@ filetype plugin indent on    " required
     "                                                         [ Shift + ЛКМ ]
     set mousemodel=extend
 
+    " При нажатии средней клавиши мыши вставлять текст позицию указателя мыши, а
+    " не курсора
+    "                                                                 [ СКМ ]
+    noremap <MiddleMouse> <LeftMouse><MiddleMouse>
+    noremap! <MiddleMouse> <LeftMouse><MiddleMouse>
+
 
 " -----------------------------------------------------------------------------
 " Отступы и табуляция
 " -----------------------------------------------------------------------------
-
     
     " Ширина символа табуляции в пробелах
     set ts=4
@@ -280,7 +291,6 @@ filetype plugin indent on    " required
     set sw=4
     " Отключить 'Умные' отступы
     set nosmarttab
-
 
     " Специфичные настройки для различных типов файлов
     autocmd FileType php setlocal ts=4 sts=4 sw=4 noet
@@ -295,6 +305,8 @@ filetype plugin indent on    " required
     autocmd FileType vim setlocal ts=4 sts=4 sw=4 et
     autocmd FileType apache setlocal ts=2 sts=2 sw=2 noet
     autocmd FileType yaml setlocal ts=2 sts=2 sw=2 et
+
+    autocmd FileType lisp,clojure,hy,scheme,racket setlocal ts=2 sts=2 sw=2 et
 
     autocmd FileType c,cpp setlocal cin
 
@@ -364,7 +376,7 @@ filetype plugin indent on    " required
     set nohlsearch
     " Клавиша, позволяющая включать и отключать подсветку
     "                                                 [ Leader + Leader + h ]
-    nmap <leader><leader>h :set hlsearch!<CR>
+    noremap <leader><leader>h :set hlsearch!<CR>
     
     " Курсор перемещается к найденному слову в процессе набора
     set incsearch
@@ -375,7 +387,8 @@ filetype plugin indent on    " required
     set nosmartcase
     " В текстовых файлах, а также в в файлах исходного кода для 
     " регистро-независимых языков игнорировать регист
-    autocmd FileType txt,lisp,html,yaml,apache set ignorecase
+    autocmd FileType txt,html,yaml,apache set ignorecase
+    autocmd FileType lisp,clojure,hy,scheme,racket set ignorecase
 
 
 " -----------------------------------------------------------------------------
@@ -394,6 +407,35 @@ filetype plugin indent on    " required
     "                                                                   [ H ]
     map h  <Plug>Sneak_s
     map H  <Plug>Sneak_S
+
+    " TODO: реализовать аналогичный функционал для Lisp'а и Python'а
+    " Семейство команд GoTo
+        "   Перейти к хедеру/ импортируемому файлу
+        "                                                      [ Leader + g + i ]
+        autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>gi :YcmCompleter GoToInclude<CR>
+
+        "   Перейти к объявлению
+        "                                                      [ Leader + g + c ]
+        autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>gc :YcmCompleter GoToDeclaration<CR>
+        autocmd FileType cs noremap <buffer> <leader>gc :YcmCompleter GoToDeclaration<CR>
+        autocmd FileType python noremap <buffer> <leader>gc :YcmCompleter GoToDeclaration<CR>
+
+        "   Перейти к определению
+        "                                                      [ Leader + g + d ]
+        autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>gd :YcmCompleter GoToDefinition<CR>
+        autocmd FileType cs noremap <buffer> <leader>gd :YcmCompleter GoToDefinition<CR>
+        autocmd FileType python noremap <buffer> <leader>gd :YcmCompleter GoToDefinition<CR>
+
+        "   Автоматически подобрать тип перехода и выполнить его
+        "                                                      [ Leader + g + g ]
+        autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>gi :YcmCompleter GoTo<CR>
+        autocmd FileType cs noremap <buffer> <leader>gi :YcmCompleter GoTo<CR>
+        autocmd FileType python noremap <buffer> <leader>gi :YcmCompleter GoTo<CR>
+
+        "   Ускоренный аналог предыдущей команы. Не перекомпилирует файл перед
+        "   вызовом
+        "                                                      [ Leader + g + G ]
+        autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>gi :YcmCompleter GoTo<CR>
 
 
 " -----------------------------------------------------------------------------
@@ -458,16 +500,15 @@ filetype plugin indent on    " required
 
     " Показывать панель NerdTree по клавише
     "                                                                 [ F5 ]
-    map <F5> :NERDTreeToggle<CR> 
-
+    noremap <F5> :NERDTreeToggle<CR> 
 
     " TagBar
     "                                                                 [ F6 ]
-    map <F6> :TagbarToggle<CR>
+    noremap <F6> :TagbarToggle<CR>
 
     " GitGutter
     "                                                                 [ F7 ]
-    map <F7> :GitGutterToggle<CR>
+    noremap <F7> :GitGutterToggle<CR>
 
 
 " -----------------------------------------------------------------------------
@@ -479,6 +520,10 @@ filetype plugin indent on    " required
     let g:paredit_mode=0
     " включаем 'радужные' скобки
     let g:lisp_rainbow=1
+    " Установить предпочтительную реализацию CommonLisp'а
+    let g:slimv_preferred = 'sbcl'
+    " Установить нестандартный <Leader>
+    let g:slimv_leader='<Plug>Slimv_'
 
 
 " -----------------------------------------------------------------------------
