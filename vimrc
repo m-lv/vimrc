@@ -5,17 +5,17 @@ set nocompatible              " be iMproved
 " -----------------------------------------------------------------------------
 
 
-" Установить при необходимости Plug.vim
-if empty(glob("~/.vim/autoload/plug.vim"))
-    execute '!curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-        \ https://raw.github.com/junegunn/vim-plug/master/plug.vim'
-endif
+  " Установить при необходимости Plug.vim
+  if empty(glob("~/.vim/autoload/plug.vim"))
+      execute '!curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+          \ https://raw.github.com/junegunn/vim-plug/master/plug.vim'
+  endif
 
-" Зададим путь для установки плагинов
-call plug#begin('~/.vim/plugged')
-" Далее следует список пользовательских плагинов
+  " Зададим путь для установки плагинов
+  call plug#begin('~/.vim/plugged')
+  " Далее следует список пользовательских плагинов
 
-" -- интерфейс:
+  " -- интерфейс:
     " Панель статуса и табов
     Plug 'https://github.com/vim-airline/vim-airline.git'
     " Тема
@@ -45,7 +45,7 @@ call plug#begin('~/.vim/plugged')
     " соответствующего окна
     Plug 'https://github.com/majutsushi/tagbar.git'
 
-" -- простое редактирование
+  " -- простое редактирование
     " Улучшение работы с текстовыми объектами
     Plug 'https://github.com/paradigm/TextObjectify'
 
@@ -68,7 +68,7 @@ call plug#begin('~/.vim/plugged')
     " Множественное выделение, как в SublimeText
     Plug 'https://github.com/terryma/vim-multiple-cursors.git'
 
-" -- фичи IDE
+  " -- фичи IDE
     " Автодополнение при интеграции с tmux'ом
     " Plug 'https://github.com/wellle/tmux-complete.vim'
 
@@ -99,106 +99,116 @@ call plug#begin('~/.vim/plugged')
         \ 'for': ['lisp','clojure','hy','scheme','racket']
     \ }
 
-" Все пользовательские плагины должны быть перечислены до этой строки
+  " Все пользовательские плагины должны быть перечислены до этой строки
 
-" Инициализируем систему плагинов
-call plug#end()
-filetype plugin indent on    " required
+  " Инициализируем систему плагинов
+  call plug#end()
+  filetype plugin indent on    " required
 
 
 " -----------------------------------------------------------------------------
 "                        Пользовательские типы файлов
 " -----------------------------------------------------------------------------
 
-    augroup filetypedetect
-        autocmd BufNewFile,BufRead *.tmpl,*.tpl setfiletype html
-        autocmd BufNewFile,BufRead *.h,*.c setfiletype c
-        autocmd BufNewFile,BufRead *.ino setfiletype cpp
-    augroup END
+  augroup filetypedetect
+      autocmd BufNewFile,BufRead *.tmpl,*.tpl setfiletype html
+      autocmd BufNewFile,BufRead *.h,*.c setfiletype c
+      autocmd BufNewFile,BufRead *.ino setfiletype cpp
+  augroup END
 
 
 " -----------------------------------------------------------------------------
 "                           Пользовательские скрипты
 " -----------------------------------------------------------------------------
 
-" Автоматическое создание include guard'ов
-function! InsIncludeGuard()
-    let guard_name = 
-        \ "_" . substitute(toupper(expand('%:t')), "\\.", "_", "g") . "_"
-    execute "normal! 1GO"
-    call setline(".", "#ifndef " . guard_name)
-    execute "normal! o"
-    call setline(".", "#define " . guard_name)
-    execute "normal! Go"
-    call setline(".", "#endif // " . guard_name)
-    execute "normal! o"
-endfunction
+  " Автоматическое создание include guard'ов
+  function! InsIncludeGuard()
+      let guard_name = 
+          \ "_" . substitute(toupper(expand('%:t')), "\\.", "_", "g") . "_"
+      execute "normal! 1GO"
+      call setline(".", "#ifndef " . guard_name)
+      execute "normal! o"
+      call setline(".", "#define " . guard_name)
+      execute "normal! Go"
+      call setline(".", "#endif // " . guard_name)
+      execute "normal! o"
+  endfunction
 
-" Вставка #pragma once в начало файла
-function! InsPragmaOnce()
-    execute "normal! 1GO"
-    call setline(".", "#pragma once")
-    execute "normal! o"
-    execute "normal! o"
-    execute "normal! O"
-endfunction
+  " Вставка #pragma once в начало файла
+  function! InsPragmaOnce()
+      execute "normal! 1GO"
+      call setline(".", "#pragma once")
+      execute "normal! o"
+      execute "normal! o"
+      execute "normal! O"
+  endfunction
 
-" Автоматически применять InsIncludeGuard к новым хедерам c++ (.h++, .hpp)
-autocmd BufNewFile *.{hpp,h++} call InsPragmaOnce()
-" Автоматически применять InsIncludeGuard к новым хедерам си (.h)
-autocmd BufNewFile *.{h} call InsIncludeGuard()
+  " Автоматически применять InsIncludeGuard к новым хедерам c++ (.h++, .hpp)
+  autocmd BufNewFile *.{hpp,h++} call InsPragmaOnce()
+  " Автоматически применять InsIncludeGuard к новым хедерам си (.h)
+  autocmd BufNewFile *.{h} call InsIncludeGuard()
 
 
 " -----------------------------------------------------------------------------
 "                                   Общее
 " -----------------------------------------------------------------------------
 
-" Возможность переопределять настройки для проекта в локальных .vimrc
-set exrc
+  " Возможность переопределять настройки для проекта в локальных .vimrc
+  set exrc
 
-" Запрет опасных команд в локальных .vimrc
-set secure
+  " Запрет опасных команд в локальных .vimrc
+  set secure
 
-" Автоматически изменять текущий путь в зависимости от выбраного буфера
-autocmd BufEnter * lcd %:p:h
+  " Автоматически изменять текущий путь в зависимости от выбраного буфера
+  autocmd BufEnter * lcd %:p:h
 
-" Дефолтная кодировка
-set ffs=unix,dos,mac
-set fencs=utf-8,cp1251,koi8-r,ucs-2,cp866 
+  " Дефолтная кодировка
+  set ffs=unix,dos,mac
+  set fencs=utf-8,cp1251,koi8-r,ucs-2,cp866 
 
 
 " -----------------------------------------------------------------------------
 "                              Настройки интерфейса
 " -----------------------------------------------------------------------------
 
-" Показать номера строк
-set number
+  " Показать номера строк
+  set number
 
-" Автоматически обновлять файл при изменении сторонней программой
-set autoread
+  " Включить/выключить подсветку положения курсора(по-умолчанию -- нет)
+  "                                                [ Leader + Leader + C ]
+  "                                             [ Leader + Leader + Shift-C ]
+  set nocursorline nocursorcolumn
+  noremap <silent> <leader><leader>c :set cursorcolumn!<CR>
+  noremap <silent> <leader><leader>C :set cursorline!<CR>
 
-" Подсветка синтаксиса
-syntax on
+  " Автоматически обновлять файл при изменении сторонней программой
+  set autoread
 
-" Использовать клавиши k и K для перемещения между окнами
-"                                                   [ k ] [ Shift-K ] 
-nnoremap k <C-W>w 
-nnoremap K <C-W>W 
+  " Минимальное расстояние от экрана до курсора
+  set scrolloff=6
 
-" Редактировать выделенный текст в новом окне
-"                                                [ Leader + Leader + W ]
-vnoremap <leader><leader>w :NR<CR>
+  " Подсветка синтаксиса
+  syntax on
 
-" Комбинации клавишь для переключения между буферами
-"                                                  [ Ctrl + PageUp ]
-"                                                 [ Ctrl + PageDown ]
-noremap <C-PAGEDOWN> :bnext<CR>
-noremap <C-PAGEUP> :bprevious<CR>
+  " Использовать клавиши k и K для перемещения между окнами
+  "                                                   [ k ] [ Shift-K ] 
+  nnoremap k <C-W>w 
+  nnoremap K <C-W>W 
 
-" -- отображение дополнительных элементов
+  " Редактировать выделенный текст в новом окне
+  "                                                [ Leader + Leader + W ]
+  vnoremap <silent> <leader><leader>w :NR<CR>
+
+  " Комбинации клавишь для переключения между буферами
+  "                                                  [ Ctrl + PageUp ]
+  "                                                 [ Ctrl + PageDown ]
+  noremap <silent> <C-PAGEDOWN> :bnext<CR>
+  noremap <silent> <C-PAGEUP> :bprevious<CR>
+
+  " -- отображение дополнительных элементов
     " Комбинация для скрытия/отображения непечатных символов
     "                                           [ Leader + leader + L ]
-    noremap <leader><leader>l :set list!<CR>:set list?<CR>
+    noremap <silent> <leader><leader>l :set list!<CR>:set list?<CR>
     " Их внешний вид
     " tab - два символа для отображения табуляции (первый символ и заполнитель)
     " eol - символ для отображения конца строки
@@ -210,27 +220,27 @@ noremap <C-PAGEUP> :bprevious<CR>
     set nohlsearch
     " Комбинация, позволяющая включать и отключать подсветку
     "                                           [ Leader + Leader + H ]
-    noremap <leader><leader>h :set hlsearch!<CR>:set hlsearch?<CR>
+    noremap <silent> <leader><leader>h :set hlsearch!<CR>:set hlsearch?<CR>
 
     " NerdTree
     "                                                       [ F5 ]
-    noremap <F5> :NERDTreeToggle<CR> 
+    noremap <silent> <F5> :NERDTreeToggle<CR> 
     " TagBar
     "                                                       [ F6 ]
-    noremap <F6> :TagbarToggle<CR>
+    noremap <silent> <F6> :TagbarToggle<CR>
     " GitGutter
     "                                                       [ F7 ]
-    noremap <F7> :GitGutterToggle<CR>
+    noremap <silent> <F7> :GitGutterToggle<CR>
 
 
-" -- настройки шелла
+  " -- настройки шелла
     " Установим шелл
     set shell=sh
     " Автоподстановка в шелле
     set wildmode=longest:list,full
 
 
-" -- длинныы строки 
+  " -- длинныы строки 
     " Включить перенос(визуальный) по словам, если длина строки слишком велика
     set wrap
     " Запретить 'разрывание' длинных строк
@@ -245,7 +255,7 @@ noremap <C-PAGEUP> :bprevious<CR>
     autocmd FileType lisp,clojure,hy,scheme,racket setlocal textwidth=120
 
 
-" --мышь
+  " --мышь
     " Включить
     set mouse=a
     " Поиск с помощью мыши
@@ -255,14 +265,14 @@ noremap <C-PAGEUP> :bprevious<CR>
     " При нажатии средней клавиши мыши вставлять текст позицию указателя мыши,
     " а не курсора
     "                                                       [ СКМ ]
-    noremap <MiddleMouse> <LeftMouse><MiddleMouse>
-    noremap! <MiddleMouse> <LeftMouse><MiddleMouse>
+    noremap <silent> <MiddleMouse> <LeftMouse><MiddleMouse>
+    noremap! <silent> <MiddleMouse> <LeftMouse><MiddleMouse>
 
 
 " Установить тёмый фон
 set background=dark
 
-" -- тема Gruvbox
+  " -- тема Gruvbox
     " Включить наклонный шрифт
     let g:gruvbox_italic = 1
     " Включить наклонный шрифт
@@ -273,7 +283,7 @@ set background=dark
     colorscheme gruvbox
 
 
-" -- Airline
+  " -- Airline
     " Выбор темы
     let g:airline_theme='gruvbox'
     " Включаем список табов по-умолчанию
@@ -288,9 +298,29 @@ set background=dark
     let g:airline#extensions#tabline#formatter = 'unique_tail'
 
 
-" -- folding
+  " -- folding
+    " Отключить сворачивание по-умолчанию
+    set nofoldenable
+    " Комбинация для включения/выключения
+    "                                           [ Leader + Leader + F ]
+    noremap <silent> <leader><leader>f :set foldenable!<CR>:set foldenable?<CR>
     " Свернуть/развернуть
-    noremap <Space> za
+    "                                                  [ Space ]
+    noremap <silent> <Space> za
+    " Свернуть все блоки
+    "                                               [ Z + Shift-C ]
+    noremap zC zM
+    " Развернуть все блоки
+    "                                               [ Z + Shift-O ]
+    noremap zO zR
+    " К следующей свертке
+    "                                                  [ Z + N ]
+    noremap zn zk
+    " К предыдущей свертке
+    "                                                  [ Z + B ]
+    noremap zb zj
+    " При редактировании vimrc включить сворачивание на основе отступов
+    autocmd BufNewFile,BufRead vimrc,.vimrc setlocal foldmethod=indent
 
 
 
@@ -298,54 +328,54 @@ set background=dark
 "                             Простое редактирование
 " -----------------------------------------------------------------------------
 
-" Более логичное действие Y -- копирование до конца строки
-noremap Y y$
+  " Более логичное действие Y -- копирование до конца строки
+  noremap Y y$
 
-" В режиме выделения повесить функционал плагина vim.surround на клавишу
-"                                                         [ S ]
-vmap s S
+  " В режиме выделения повесить функционал плагина vim.surround на клавишу
+  "                                                         [ S ]
+  vmap s S
 
-" Не снимать выделение после использования > и <
-" vnoremap < <gv
-" vnoremap > >gv
+  " Не снимать выделение после использования > и <
+  " vnoremap < <gv
+  " vnoremap > >gv
 
-" При нажатии Shift вместе со стрелкой выделять текст
-nnoremap <S-UP> <S-V><UP>
-nnoremap <S-DOWN> <S-V><DOWN>
-nnoremap <S-RIGHT> <S-V><RIGHT>
-nnoremap <S-LEFT> <S-V><LEFT>
+  " При нажатии Shift вместе со стрелкой выделять текст
+  nnoremap <S-UP> <S-V><UP>
+  nnoremap <S-DOWN> <S-V><DOWN>
+  nnoremap <S-RIGHT> <S-V><RIGHT>
+  nnoremap <S-LEFT> <S-V><LEFT>
 
-vnoremap <S-UP> <UP>
-vnoremap <S-DOWN> <DOWN>
-vnoremap <S-RIGHT> <RIGHT>
-vnoremap <S-LEFT> <LEFT>
-
-
-" Перемещение/копирование строк/выделнного текста в соседнее окно
-"                                                  [ Ctrl-L + ARROW ]
-"                                               [ Ctrl-L + Ctrl-ARROW ]
-vnoremap <C-L><UP> y<C-W><UP>gP<C-W><DOWN>
-nnoremap <C-L><UP> yy<C-W><UP>P<CR><C-W><DOWN>
-vnoremap <C-L><C-UP> d<C-W><UP>gP<C-W><DOWN>
-nnoremap <C-L><C-UP> dd<C-W><UP>P<CR><C-W><DOWN>
-
-vnoremap <C-L><LEFT> y<C-W><LEFT>gP<C-W><RIGHT>
-nnoremap <C-L><LEFT> yy<C-W><LEFT>P<CR><C-W><RIGHT>
-vnoremap <C-L><C-LEFT> d<C-W><LEFT>gP<C-W><RIGHT>
-nnoremap <C-L><C-LEFT> dd<C-W><LEFT>P<CR><C-W><RIGHT>
-
-vnoremap <C-L><DOWN> y<C-W><DOWN>gP<C-W><UP>
-nnoremap <C-L><DOWN> yy<C-W><DOWN>P<CR><C-W><UP>
-vnoremap <C-L><C-DOWN> d<C-W><DOWN>gP<C-W><UP>
-nnoremap <C-L><C-DOWN> dd<C-W><DOWN>P<CR><C-W><UP>
-
-vnoremap <C-L><RIGHT> y<C-W><RIGHT>gP<C-W><LEFT>
-nnoremap <C-L><RIGHT> yy<C-W><RIGHT>P<CR><C-W><LEFT>
-vnoremap <C-L><C-RIGHT> d<C-W><RIGHT>gP<C-W><LEFT>
-nnoremap <C-L><C-RIGHT> dd<C-W><RIGHT>P<CR><C-W><LEFT>
+  vnoremap <S-UP> <UP>
+  vnoremap <S-DOWN> <DOWN>
+  vnoremap <S-RIGHT> <RIGHT>
+  vnoremap <S-LEFT> <LEFT>
 
 
-" -- комбинации для копирования и вставки через системный буфер
+  " Перемещение/копирование строк/выделнного текста в соседнее окно
+  "                                                  [ Ctrl-L + ARROW ]
+  "                                               [ Ctrl-L + Ctrl-ARROW ]
+  vnoremap <C-L><UP> y<C-W><UP>gP<C-W><DOWN>
+  nnoremap <C-L><UP> yy<C-W><UP>P<CR><C-W><DOWN>
+  vnoremap <C-L><C-UP> d<C-W><UP>gP<C-W><DOWN>
+  nnoremap <C-L><C-UP> dd<C-W><UP>P<CR><C-W><DOWN>
+
+  vnoremap <C-L><LEFT> y<C-W><LEFT>gP<C-W><RIGHT>
+  nnoremap <C-L><LEFT> yy<C-W><LEFT>P<CR><C-W><RIGHT>
+  vnoremap <C-L><C-LEFT> d<C-W><LEFT>gP<C-W><RIGHT>
+  nnoremap <C-L><C-LEFT> dd<C-W><LEFT>P<CR><C-W><RIGHT>
+
+  vnoremap <C-L><DOWN> y<C-W><DOWN>gP<C-W><UP>
+  nnoremap <C-L><DOWN> yy<C-W><DOWN>P<CR><C-W><UP>
+  vnoremap <C-L><C-DOWN> d<C-W><DOWN>gP<C-W><UP>
+  nnoremap <C-L><C-DOWN> dd<C-W><DOWN>P<CR><C-W><UP>
+
+  vnoremap <C-L><RIGHT> y<C-W><RIGHT>gP<C-W><LEFT>
+  nnoremap <C-L><RIGHT> yy<C-W><RIGHT>P<CR><C-W><LEFT>
+  vnoremap <C-L><C-RIGHT> d<C-W><RIGHT>gP<C-W><LEFT>
+  nnoremap <C-L><C-RIGHT> dd<C-W><RIGHT>P<CR><C-W><LEFT>
+
+
+  " -- комбинации для копирования и вставки через системный буфер
     "  1. копировать
     "                                              [ Ctrl-Shift-Y ]
     noremap <C-S-Y> "+y
@@ -356,32 +386,32 @@ nnoremap <C-L><C-RIGHT> dd<C-W><RIGHT>P<CR><C-W><LEFT>
     "                                              [ Ctrl-Shift-D ]
     noremap <C-S-D> "+d
 
-" Отключаем стандартные биндиги для плагина Move(перемещение строк
-" вверх/вниз)    
-let g:move_map_keys = 0
-" Настраиваем свои комбинации
-"                                                     [ Ctrl-Up ]
-"                                                   [ 2 x Ctrl-Up ]
-"                                                    [ Ctrl-Down ]
-"                                                  [2 x Ctrl-Down ]
-vmap <C-UP> <Plug>MoveBlockUp
-map <C-UP><C-UP> <Plug>MoveLineUp
-vmap <C-DOWN> <Plug>MoveBlockDown
-map <C-DOWN><C-DOWN> <Plug>MoveLineDown
+  " Отключаем стандартные биндиги для плагина Move(перемещение строк
+  " вверх/вниз)    
+  let g:move_map_keys = 0
+  " Настраиваем свои комбинации
+  "                                                     [ Ctrl-Up ]
+  "                                                   [ 2 x Ctrl-Up ]
+  "                                                    [ Ctrl-Down ]
+  "                                                  [2 x Ctrl-Down ]
+  vmap <silent> <C-UP> <Plug>MoveBlockUp
+  map <silent> <C-UP><C-UP> <Plug>MoveLineUp
+  vmap <silent> <C-DOWN> <Plug>MoveBlockDown
+  map <silent> <C-DOWN><C-DOWN> <Plug>MoveLineDown
 
-" Улучшенное поведение f, F, t и T
-map f <Plug>Sneak_f
-map F <Plug>Sneak_F
-map t <Plug>Sneak_t
-map T <Plug>Sneak_T
+  " Улучшенное поведение f, F, t и T
+  map <silent> f <Plug>Sneak_f
+  map <silent> F <Plug>Sneak_F
+  map <silent> t <Plug>Sneak_t
+  map <silent> T <Plug>Sneak_T
 
-" Поиск последовательности из 2 симовлов
-"                                                        [ H ]
-"                                                     [ Shift-H ]
-map h  <Plug>Sneak_s
-map H  <Plug>Sneak_S
+  " Поиск последовательности из 2 симовлов
+  "                                                        [ H ]
+  "                                                     [ Shift-H ]
+  map <silent> h  <Plug>Sneak_s
+  map <silent> H  <Plug>Sneak_S
 
-" -- настройки отступов
+  " -- настройки отступов
     " Ширина символа табуляции в пробелах
     set ts=4
     " Количество пробелов, добавляемых при нажатии <Tab>
@@ -407,9 +437,11 @@ map H  <Plug>Sneak_S
     autocmd FileType lisp,clojure,hy,scheme,racket 
         \ setlocal ts=2 sts=2 sw=2 et
     autocmd FileType c,cpp setlocal cin
+    autocmd BufNewFile,BufRead vimrc,.vimrc 
+        \ setlocal ts=2 sw=2 sts=2 et
 
 
-" -- поиск по тексту
+  " -- поиск по тексту
     " Вообще хз, что это такое
     set noshowmatch
     " Курсор перемещается к найденному слову в процессе набора
@@ -418,7 +450,8 @@ map H  <Plug>Sneak_S
     set noignorecase
     " Комбинация для переключения этого параметра
     "                                                 [ Leader + Leader + I ]
-    noremap <leader><leader>i :setlocal ignorecase!<CR>:set ignorecase?<CR>
+    noremap <silent> <leader><leader>i 
+        \ :setlocal ignorecase!<CR>:set ignorecase?<CR>
     " Отключить 'умное' определение регистра
     set nosmartcase
     " В текстовых файлах, а также в в файлах исходного кода для 
@@ -432,7 +465,7 @@ map H  <Plug>Sneak_S
 "                                  Функции IDE
 " -----------------------------------------------------------------------------
 
-" -- комментирование
+  " -- комментирование
     " Закомментировать строку или выделенные блок
     "                                                 [ Leader + C + C]
     map <leader>cc <plug>NERDCommenterComment
@@ -444,7 +477,7 @@ map H  <Plug>Sneak_S
     map <leader>cu <plug>NERDCommenterUncomment
 
 
-" -- документирование
+  " -- документирование
     " Получить тип данных сущности под курсором
     "                                                 [ Leader + C + T]
     noremap <buffer> <leader>ct <NOP>
@@ -478,7 +511,7 @@ map H  <Plug>Sneak_S
         \ noremap <buffer> <leader>cD :YcmCompleter GetDocImprecise<CR>
     
 
-" -- рефакторинг
+  " -- рефакторинг
     " FixIt
     "                                                 [ Leader + R + F ]
     noremap <buffer> <leader>rf <NOP>
@@ -492,7 +525,7 @@ map H  <Plug>Sneak_S
     noremap <buffer> <leader>rn <NOP>
 
 
-" -- переходы
+  " -- переходы
     " TODO: реализовать аналогичный функционал для Lisp'а и Python'а
     " Семейство команд GoTo
     "   Перейти к хедеру/ импортируемому файлу
@@ -537,17 +570,17 @@ map H  <Plug>Sneak_S
         \ noremap <buffer> <leader>gG :YcmCompleter GoToImprecise<CR>
 
 
-" -- отладка
+  " -- отладка
     " TODO
 
-" -- сборка/выполнение
+  " -- сборка/выполнение
     " Загрузить текущую конфигурацию vimrc
     "                                              [ Leader + Leader + U ]
     autocmd BufNewFile,BufRead vimrc,.vimrc 
         \ noremap <buffer> <leader><leader>u :w<CR>:source $MYVIMRC<CR>
 
 
-" -- YouCompleteMe
+  " -- YouCompleteMe
     " Минимальное количество символов, которое нужно ввести для получения
     " вариантов автодополнения на основе имени идентификатора. Установка в
     " занчение 99 отключит анализ на основе идентификатора и оставит только
@@ -558,13 +591,13 @@ map H  <Plug>Sneak_S
     let g:ycm_key_list_stop_completion = ['<C-Y>', '<ESC>']
     
 
-" -- UltiSnips
+  " -- UltiSnips
     let g:UltiSnipsExpandTrigger="<C-CR>"
     let g:UltiSnipsListSnippets="<C-TAB>"
     let g:UltiSnipsJumpForwardTrigger="<C-RIGHT>"
     let g:UltiSnipsJumpBackwardTrigger="<C-LEFT>"
 
-" -- Slimv
+  " -- Slimv
     " Не выставлять закрывающие скобки автоматически
     let g:paredit_mode=0
     " включаем 'радужные' скобки
@@ -574,11 +607,11 @@ map H  <Plug>Sneak_S
     " Установить нестандартный <Leader>
     let g:slimv_leader='<Plug>Slimv_'
 
-" -- NerdCommenter
+  " -- NerdCommenter
     " Добавлять пробел перед текстом комментария
-    let g:NERDSpaceDelims = 1
+    let g:NERDSpaceDelims=1
     " Use compact syntax for prettified multi-line comments
-    let g:NERDCompactSexyComs = 1
+    let g:NERDCompactSexyComs=1
     " Align line-wise comment delimiters flush left instead of following code
     " indentation
     let g:NERDDefaultAlign = 'left'
@@ -586,7 +619,7 @@ map H  <Plug>Sneak_S
     let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
     " Allow commenting and inverting empty lines (useful when commenting a
     " region)
-    let g:NERDCommentEmptyLines = 1
+    let g:NERDCommentEmptyLines=1
     " Enable trimming of trailing whitespace when uncommenting
-    let g:NERDTrimTrailingWhitespace = 1
+    let g:NERDTrimTrailingWhitespace=1
 
