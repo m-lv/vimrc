@@ -155,14 +155,15 @@ filetype plugin indent on    " required
     " использования текущей конфигурации редактора
     "                                                 [ Leader + Leader + u ]
     
-    autocmd BufNewFile,BufRead vimrc,.vimrc noremap <buffer> <leader><leader>u :w<CR>:source $MYVIMRC<CR>
+    autocmd BufNewFile,BufRead vimrc,.vimrc 
+        \ noremap <buffer> <leader><leader>u :w<CR>:source $MYVIMRC<CR>
 
     " Автоматически изменять текущий путь в зависимости от выбраного буфера
     autocmd BufEnter * lcd %:p:h
 
     " Перемещение/копирование строк/выделнного текста в соседнее окно
-    "                                                    [ Ctrl + L + <DIR> ]
-    "                                             [ Ctrl + L + Ctrl + <DIR> ]
+    "                                                  [ Ctrl + L + <ARROW> ]
+    "                                           [ Ctrl + L + Ctrl + <ARROW> ]
     vnoremap <C-L><UP> y<C-W><UP>P<CR><C-W><DOWN>
     noremap <C-L><UP> yy<C-W><UP>P<CR><C-W><DOWN>
     vnoremap <C-L><C-UP> d<C-W><UP>P<CR><C-W><DOWN>
@@ -189,7 +190,8 @@ filetype plugin indent on    " required
 
     " Автоматическое создание include guard'ов
     function! InsIncludeGuard()
-        let guard_name = "_" . substitute(toupper(expand('%:t')), "\\.", "_", "g") . "_"
+        let guard_name = 
+            \ "_" . substitute(toupper(expand('%:t')), "\\.", "_", "g") . "_"
         execute "normal! 1GO"
         call setline(".", "#ifndef " . guard_name)
         execute "normal! o"
@@ -308,8 +310,8 @@ filetype plugin indent on    " required
     "                                                         [ Shift + ЛКМ ]
     set mousemodel=extend
 
-    " При нажатии средней клавиши мыши вставлять текст позицию указателя мыши, а
-    " не курсора
+    " При нажатии средней клавиши мыши вставлять текст позицию указателя мыши,
+    " а не курсора
     "                                                                 [ СКМ ]
     noremap <MiddleMouse> <LeftMouse><MiddleMouse>
     noremap! <MiddleMouse> <LeftMouse><MiddleMouse>
@@ -344,7 +346,8 @@ filetype plugin indent on    " required
     autocmd FileType apache setlocal ts=2 sts=2 sw=2 noet
     autocmd FileType yaml setlocal ts=2 sts=2 sw=2 et
 
-    autocmd FileType lisp,clojure,hy,scheme,racket setlocal ts=2 sts=2 sw=2 et
+    autocmd FileType lisp,clojure,hy,scheme,racket 
+        \ setlocal ts=2 sts=2 sw=2 et
 
     autocmd FileType c,cpp setlocal cin
 
@@ -444,30 +447,40 @@ filetype plugin indent on    " required
     " Семейство команд GoTo
     "   Перейти к хедеру/ импортируемому файлу
     "                                                      [ Leader + g + i ]
-    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>gi :YcmCompleter GoToInclude<CR>
+    autocmd FileType c,cpp,objc,objcpp 
+        \ noremap <buffer> <leader>gi :YcmCompleter GoToInclude<CR>
 
     "   Перейти к объявлению
     "                                                      [ Leader + g + c ]
-    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>gc :YcmCompleter GoToDeclaration<CR>
-    autocmd FileType cs noremap <buffer> <leader>gc :YcmCompleter GoToDeclaration<CR>
-    " autocmd FileType python noremap <buffer> <leader>gc :YcmCompleter GoToDeclaration<CR>
+    autocmd FileType c,cpp,objc,objcpp 
+        \ noremap <buffer> <leader>gc :YcmCompleter GoToDeclaration<CR>
+    autocmd FileType cs 
+        \ noremap <buffer> <leader>gc :YcmCompleter GoToDeclaration<CR>
+    " autocmd FileType python 
+    "   \ noremap <buffer> <leader>gc :YcmCompleter GoToDeclaration<CR>
 
     "   Перейти к определению
     "                                                  [ Leader + g + d ]
-    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>gd :YcmCompleter GoToDefinition<CR>
-    autocmd FileType cs noremap <buffer> <leader>gd :YcmCompleter GoToDefinition<CR>
-    " autocmd FileType python noremap <buffer> <leader>gd :YcmCompleter GoToDefinition<CR>
+    autocmd FileType c,cpp,objc,objcpp 
+        \ noremap <buffer> <leader>gd :YcmCompleter GoToDefinition<CR>
+    autocmd FileType cs 
+        \ noremap <buffer> <leader>gd :YcmCompleter GoToDefinition<CR>
+    " autocmd FileType python 
+    "   \ noremap <buffer> <leader>gd :YcmCompleter GoToDefinition<CR>
 
     "   Автоматически подобрать тип перехода и выполнить его
     "                                                  [ Leader + g + g ]
-    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>gg :YcmCompleter GoTo<CR>
-    autocmd FileType cs noremap <buffer> <leader>gi :YcmCompleter GoTo<CR>
+    autocmd FileType c,cpp,objc,objcpp 
+        \ noremap <buffer> <leader>gg :YcmCompleter GoTo<CR>
+    autocmd FileType cs 
+        \ noremap <buffer> <leader>gi :YcmCompleter GoTo<CR>
     " autocmd FileType python noremap <buffer> <leader>gi :YcmCompleter GoTo<CR>
 
     "   Ускоренный аналог предыдущей команы. Не перекомпилирует файл перед
     "   вызовом
     "                                                  [ Leader + g + G ]
-    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>gG :YcmCompleter GoToImprecise<CR>
+    autocmd FileType c,cpp,objc,objcpp 
+        \ noremap <buffer> <leader>gG :YcmCompleter GoToImprecise<CR>
 
 " -----------------------------------------------------------------------------
 " Рефакторинг
@@ -475,8 +488,10 @@ filetype plugin indent on    " required
 
     " FixIt
     "                                                      [ Leader + g + f ]
-    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>rf :YcmCompleter FixIt<CR>
-    autocmd FileType cs noremap <buffer> <leader>rf :YcmCompleter FixIt<CR>
+    autocmd FileType c,cpp,objc,objcpp 
+        \ noremap <buffer> <leader>rf :YcmCompleter FixIt<CR>
+    autocmd FileType cs 
+        \ noremap <buffer> <leader>rf :YcmCompleter FixIt<CR>
 
     " Переименовать сущность под курсором
     "                                                      [ Leader + g + r ]
@@ -498,23 +513,30 @@ filetype plugin indent on    " required
 
     " Получить тип данных сущности под курсором
     "                                                       [ Leader + c + t]
-    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>ct :YcmCompleter GetType<CR>
+    autocmd FileType c,cpp,objc,objcpp 
+        \ noremap <buffer> <leader>ct :YcmCompleter GetType<CR>
     " Аналогично предыдущему, но не вызывает перекомпиляцию файла
     "                                                       [ Leader + c + T]
-    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>cT :YcmCompleter GetTypeImprecise<CR>
+    autocmd FileType c,cpp,objc,objcpp 
+        \ noremap <buffer> <leader>cT :YcmCompleter GetTypeImprecise<CR>
 
     " Получить семантического предка сущности под курсором
     "                                                       [ Leader + c + p]
-    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>cp :YcmCompleter GetParent<CR>
+    autocmd FileType c,cpp,objc,objcpp 
+        \ noremap <buffer> <leader>cp :YcmCompleter GetParent<CR>
 
     " Получить документацию по сущности под курсором
     "                                                       [ Leader + c + d]
-    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>cd :YcmCompleter GetDoc<CR>
-    autocmd FileType cs noremap <buffer> <leader>cd :YcmCompleter GetDoc<CR>
+    autocmd FileType c,cpp,objc,objcpp 
+        \ noremap <buffer> <leader>cd :YcmCompleter GetDoc<CR>
+    autocmd FileType cs 
+        \ noremap <buffer> <leader>cd :YcmCompleter GetDoc<CR>
     " Аналогично предыдущему, но не вызывает перекомпиляцию файла
     "                                                       [ Leader + c + D]
-    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>cD :YcmCompleter GetDocImprecise<CR>
-    autocmd FileType cs noremap <buffer> <leader>cD :YcmCompleter GetDocImprecise<CR>
+    autocmd FileType c,cpp,objc,objcpp 
+        \ noremap <buffer> <leader>cD :YcmCompleter GetDocImprecise<CR>
+    autocmd FileType cs 
+        \ noremap <buffer> <leader>cD :YcmCompleter GetDocImprecise<CR>
 
 " -----------------------------------------------------------------------------
 " Отладка
