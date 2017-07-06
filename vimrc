@@ -205,6 +205,12 @@ set nocompatible              " be iMproved
   noremap <silent> <C-PAGEDOWN> :bnext<CR>
   noremap <silent> <C-PAGEUP> :bprevious<CR>
 
+  " Комбинации для открытия текущего файла в двух view
+  "                                                [ Leader + Leader + S ]
+  "                                             [ Leader + Leader + Shift-S ]
+  noremap <leader><leader>s :vsplit<CR>
+  noremap <leader><leader>S :split<CR>
+
   " -- отображение дополнительных элементов
     " Комбинация для скрытия/отображения непечатных символов
     "                                           [ Leader + leader + L ]
@@ -568,6 +574,19 @@ set background=dark
     "                                             [ Leader + g + Shift-G ]
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>gG :YcmCompleter GoToImprecise<CR>
+
+  " -- копии инструкций перехода с открытием нового таба
+  "                                              [ аналогично, но Ctrl+G ]
+    noremap <C-G>g :vsplit<CR><C-W>wgg
+    noremap <C-G><C-G> :vsplit<CR><C-W>wgg
+    noremap <C-G> :vsplit<CR><C-W>wG
+    noremap <C-G>f :vsplit<CR><C-W>wgf 
+    map <leader><C-G>c :vsplit<CR><C-W>w<leader>gi
+    map <leader><C-G>f :vsplit<CR><C-W>w<leader>gf
+    map <leader><C-G>g :vsplit<CR><C-W>w<leader>gg
+    map <leader><C-G><C-G> :vsplit<CR><C-W>w<leader>gg
+    map <leader><C-G>G :vsplit<CR><C-W>w<leader>gG
+    map <leader><C-G><C-S-G> :vsplit<CR><C-W>w<leader>gG
 
 
   " -- отладка
