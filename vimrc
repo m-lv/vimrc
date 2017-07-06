@@ -101,11 +101,19 @@ call plug#begin('~/.vim/plugged')
 call plug#end()
 filetype plugin indent on    " required
 
+" -----------------------------------------------------------------------------
+" Пользовательские типы файлов
+" -----------------------------------------------------------------------------
+
+    augroup filetypedetect
+        autocmd BufNewFile,BufRead *.tmpl,*.tpl setfiletype html
+        autocmd BufNewFile,BufRead *.h,*.c setfiletype c
+        autocmd BufNewFile,BufRead *.ino setfiletype cpp
+    augroup END
 
 " -----------------------------------------------------------------------------
 " Общие настройки 
 " -----------------------------------------------------------------------------
-
 
     " Показать номера строк
     set number
@@ -139,20 +147,45 @@ filetype plugin indent on    " required
     "                                                 [ Leader + Leader + w ]
     vnoremap <leader><leader>w :NR<CR>
 
-" -----------------------------------------------------------------------------
-" Пользовательские типы файлов
-" -----------------------------------------------------------------------------
+    " Не снимать выделение после использования > и <
+    vnoremap < <gv
+    vnoremap > >gv
 
+    " При редактировании vimrc назначить доп. комбинацию клавиш для сохранения и
+    " использования текущей конфигурации редактора
+    "                                                 [ Leader + Leader + u ]
+    
+    autocmd BufNewFile,BufRead vimrc,.vimrc noremap <buffer> <leader><leader>u :w<CR>:source $MYVIMRC<CR>
 
-    autocmd BufNewFile,BufRead *.tmpl,*.tpl setfiletype html
-    autocmd BufNewFile,BufRead *.h,*.c setfiletype c
-    autocmd BufNewFile,BufRead *.ino setfiletype cpp
+    " Автоматически изменять текущий путь в зависимости от выбраного буфера
+    autocmd BufEnter * lcd %:p:h
 
+    " Перемещение/копирование строк/выделнного текста в соседнее окно
+    "                                                    [ Ctrl + L + <DIR> ]
+    "                                             [ Ctrl + L + Ctrl + <DIR> ]
+    vnoremap <C-L><UP> y<C-W><UP>P<CR><C-W><DOWN>
+    noremap <C-L><UP> yy<C-W><UP>P<CR><C-W><DOWN>
+    vnoremap <C-L><C-UP> d<C-W><UP>P<CR><C-W><DOWN>
+    noremap <C-L><C-UP> dd<C-W><UP>P<CR><C-W><DOWN>
+
+    vnoremap <C-L><LEFT> y<C-W><LEFT>P<CR><C-W><RIGHT>
+    noremap <C-L><LEFT> yy<C-W><LEFT>P<CR><C-W><RIGHT>
+    vnoremap <C-L><C-LEFT> d<C-W><LEFT>P<CR><C-W><RIGHT>
+    noremap <C-L><C-LEFT> dd<C-W><LEFT>P<CR><C-W><RIGHT>
+
+    vnoremap <C-L><DOWN> y<C-W><DOWN>P<CR><C-W><UP>
+    noremap <C-L><DOWN> yy<C-W><DOWN>P<CR><C-W><UP>
+    vnoremap <C-L><C-DOWN> d<C-W><DOWN>P<CR><C-W><UP>
+    noremap <C-L><C-DOWN> dd<C-W><DOWN>P<CR><C-W><UP>
+
+    vnoremap <C-L><RIGHT> y<C-W><RIGHT>P<CR><C-W><LEFT>
+    noremap <C-L><RIGHT> yy<C-W><RIGHT>P<CR><C-W><LEFT>
+    vnoremap <C-L><C-RIGHT> d<C-W><RIGHT>P<CR><C-W><LEFT>
+    noremap <C-L><C-RIGHT> dd<C-W><RIGHT>P<CR><C-W><LEFT>
 
 " -----------------------------------------------------------------------------
 " Пользовательские скрипты
 " -----------------------------------------------------------------------------
-
 
     " Автоматическое создание include guard'ов
     function! InsIncludeGuard()
@@ -180,12 +213,9 @@ filetype plugin indent on    " required
     " Автоматически применять InsIncludeGuard к новым хедерам си (.h)
     autocmd BufNewFile *.{h} call InsIncludeGuard()
 
-
-
 " -----------------------------------------------------------------------------
 " Непечатные символы
 " -----------------------------------------------------------------------------
-
 
     " Комбинация для скрытия/отображения
     "                                                 [ Leader + leader + l ]
@@ -198,11 +228,9 @@ filetype plugin indent on    " required
     " extends - индикатор продолжения строки в право
     set listchars=tab:▸·,eol:¬,precedes:«,extends:»,space:\.
 
-
 " -----------------------------------------------------------------------------
 " Работа с буферами
 " -----------------------------------------------------------------------------
-
 
     " Комбинации клавишь для переключения между буферами
     "                                                      [ Ctrl + Page Up ]
@@ -210,22 +238,18 @@ filetype plugin indent on    " required
     noremap <C-PAGEDOWN> :bnext<CR>
     noremap <C-PAGEUP> :bprevious<CR>
 
-
 " -----------------------------------------------------------------------------
 " Настройки шелла
 " -----------------------------------------------------------------------------
-
 
     " Установим шелл
     set shell=sh
     " Автоподстановка в шелле
     set wildmode=longest:list,full
 
-
 " -----------------------------------------------------------------------------
 " Работа с длинными строками 
 " -----------------------------------------------------------------------------
-
 
     " Включить перенос(визуальный) по словам, если длина строки слишком велика
     set wrap
@@ -241,11 +265,9 @@ filetype plugin indent on    " required
     " Для лиспа принимаем ширину окна в 120 символов
     autocmd FileType lisp,clojure,hy,scheme,racket setlocal textwidth=120
 
-
 " -----------------------------------------------------------------------------
 " Настройки буфера обмена, копирования и вставки
 " -----------------------------------------------------------------------------
-
 
     " Комбинации для копирования и вставки через системный буфер
     "  1. копировать
@@ -258,11 +280,9 @@ filetype plugin indent on    " required
     "                                                   [ Ctrl + Shift + d  ]
     noremap <C-S-D> "+d
 
-
 " -----------------------------------------------------------------------------
 " Манипуляции со строками
 " -----------------------------------------------------------------------------
-
 
     " Отключаем стандартные биндиги для плагина Move    
     let g:move_map_keys = 0
@@ -276,11 +296,9 @@ filetype plugin indent on    " required
     vmap <C-DOWN> <Plug>MoveBlockDown
     map <C-DOWN><C-DOWN> <Plug>MoveLineDown
 
-
 " -----------------------------------------------------------------------------
 " Настройки мыши
 " -----------------------------------------------------------------------------
-
 
     " Включить мышь
     set mouse=a
@@ -295,7 +313,6 @@ filetype plugin indent on    " required
     "                                                                 [ СКМ ]
     noremap <MiddleMouse> <LeftMouse><MiddleMouse>
     noremap! <MiddleMouse> <LeftMouse><MiddleMouse>
-
 
 " -----------------------------------------------------------------------------
 " Отступы и табуляция
@@ -331,12 +348,9 @@ filetype plugin indent on    " required
 
     autocmd FileType c,cpp setlocal cin
 
-
-
 " -----------------------------------------------------------------------------
 " Кодировки и раскладка клавиатуры
 " -----------------------------------------------------------------------------
-
 
     " Дефолтная кодировка
     set ffs=unix,dos,mac
@@ -389,8 +403,7 @@ filetype plugin indent on    " required
 " Поиск
 " -----------------------------------------------------------------------------
 
-
-    " Отключение курсора на совпадающей парной скобке
+    " Вообще хз, что это такое
     set noshowmatch
 
     " По-умолчанию отключить подсветку найденных совпадений
@@ -411,11 +424,9 @@ filetype plugin indent on    " required
     autocmd FileType txt,html,yaml,apache set ignorecase
     autocmd FileType lisp,clojure,hy,scheme,racket set ignorecase
 
-
 " -----------------------------------------------------------------------------
 " Перемещение по тексту и коду
 " -----------------------------------------------------------------------------
-
 
     " Улучшенное поведение f, F, t и T
     map f <Plug>Sneak_f
@@ -431,60 +442,94 @@ filetype plugin indent on    " required
 
     " TODO: реализовать аналогичный функционал для Lisp'а и Python'а
     " Семейство команд GoTo
-        "   Перейти к хедеру/ импортируемому файлу
-        "                                                      [ Leader + g + i ]
-        autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>gi :YcmCompleter GoToInclude<CR>
+    "   Перейти к хедеру/ импортируемому файлу
+    "                                                      [ Leader + g + i ]
+    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>gi :YcmCompleter GoToInclude<CR>
 
-        "   Перейти к объявлению
-        "                                                      [ Leader + g + c ]
-        autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>gc :YcmCompleter GoToDeclaration<CR>
-        autocmd FileType cs noremap <buffer> <leader>gc :YcmCompleter GoToDeclaration<CR>
-        autocmd FileType python noremap <buffer> <leader>gc :YcmCompleter GoToDeclaration<CR>
+    "   Перейти к объявлению
+    "                                                      [ Leader + g + c ]
+    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>gc :YcmCompleter GoToDeclaration<CR>
+    autocmd FileType cs noremap <buffer> <leader>gc :YcmCompleter GoToDeclaration<CR>
+    " autocmd FileType python noremap <buffer> <leader>gc :YcmCompleter GoToDeclaration<CR>
 
-        "   Перейти к определению
-        "                                                      [ Leader + g + d ]
-        autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>gd :YcmCompleter GoToDefinition<CR>
-        autocmd FileType cs noremap <buffer> <leader>gd :YcmCompleter GoToDefinition<CR>
-        autocmd FileType python noremap <buffer> <leader>gd :YcmCompleter GoToDefinition<CR>
+    "   Перейти к определению
+    "                                                  [ Leader + g + d ]
+    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>gd :YcmCompleter GoToDefinition<CR>
+    autocmd FileType cs noremap <buffer> <leader>gd :YcmCompleter GoToDefinition<CR>
+    " autocmd FileType python noremap <buffer> <leader>gd :YcmCompleter GoToDefinition<CR>
 
-        "   Автоматически подобрать тип перехода и выполнить его
-        "                                                      [ Leader + g + g ]
-        autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>gi :YcmCompleter GoTo<CR>
-        autocmd FileType cs noremap <buffer> <leader>gi :YcmCompleter GoTo<CR>
-        autocmd FileType python noremap <buffer> <leader>gi :YcmCompleter GoTo<CR>
+    "   Автоматически подобрать тип перехода и выполнить его
+    "                                                  [ Leader + g + g ]
+    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>gg :YcmCompleter GoTo<CR>
+    autocmd FileType cs noremap <buffer> <leader>gi :YcmCompleter GoTo<CR>
+    " autocmd FileType python noremap <buffer> <leader>gi :YcmCompleter GoTo<CR>
 
-        "   Ускоренный аналог предыдущей команы. Не перекомпилирует файл перед
-        "   вызовом
-        "                                                      [ Leader + g + G ]
-        autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>gi :YcmCompleter GoTo<CR>
-
+    "   Ускоренный аналог предыдущей команы. Не перекомпилирует файл перед
+    "   вызовом
+    "                                                  [ Leader + g + G ]
+    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>gG :YcmCompleter GoToImprecise<CR>
 
 " -----------------------------------------------------------------------------
-" Метки
+" Рефакторинг
 " -----------------------------------------------------------------------------
 
+    " FixIt
+    "                                                      [ Leader + g + f ]
+    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>rf :YcmCompleter FixIt<CR>
+    autocmd FileType cs noremap <buffer> <leader>rf :YcmCompleter FixIt<CR>
+
+    " Переименовать сущность под курсором
+    "                                                      [ Leader + g + r ]
+    "   TODO
+
+" -----------------------------------------------------------------------------
+" Комментарии и документация
+" -----------------------------------------------------------------------------
+
+    " Закомментировать строку или выделенные блок
+    "                                                       [ Leader + c + c]
+    map <leader>cc <plug>NERDCommenterComment
+    " Закомментировать строку или выделенные блок (Sexy Comment)
+    "                                                       [ Leader + c + s]
+    map <leader>cs <plug>NERDCommenterSexy
+    " Раскомментировать строку или выделенные блок
+    "                                                       [ Leader + c + u]
+    map <leader>cu <plug>NERDCommenterUncomment
+
+    " Получить тип данных сущности под курсором
+    "                                                       [ Leader + c + t]
+    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>ct :YcmCompleter GetType<CR>
+    " Аналогично предыдущему, но не вызывает перекомпиляцию файла
+    "                                                       [ Leader + c + T]
+    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>cT :YcmCompleter GetTypeImprecise<CR>
+
+    " Получить семантического предка сущности под курсором
+    "                                                       [ Leader + c + p]
+    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>cp :YcmCompleter GetParent<CR>
+
+    " Получить документацию по сущности под курсором
+    "                                                       [ Leader + c + d]
+    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>cd :YcmCompleter GetDoc<CR>
+    autocmd FileType cs noremap <buffer> <leader>cd :YcmCompleter GetDoc<CR>
+    " Аналогично предыдущему, но не вызывает перекомпиляцию файла
+    "                                                       [ Leader + c + D]
+    autocmd FileType c,cpp,objc,objcpp noremap <buffer> <leader>cD :YcmCompleter GetDocImprecise<CR>
+    autocmd FileType cs noremap <buffer> <leader>cD :YcmCompleter GetDocImprecise<CR>
+
+" -----------------------------------------------------------------------------
+" Отладка
+" -----------------------------------------------------------------------------
 
     " TODO
-
-
-
-" -----------------------------------------------------------------------------
-" Фолдинг
-" -----------------------------------------------------------------------------
-
-    " TODO
-
 
 " -----------------------------------------------------------------------------
 " Проверка орфографии
 " -----------------------------------------------------------------------------
 
-
     " TODO
 
-
 " -----------------------------------------------------------------------------
-" Сниппеты
+" Сниппеты(UltiSnips)
 " -----------------------------------------------------------------------------
 
     " UltiSnips
@@ -494,9 +539,8 @@ filetype plugin indent on    " required
     let g:UltiSnipsJumpBackwardTrigger="<C-LEFT>"
 
 " -----------------------------------------------------------------------------
-" Комментирование кода (NerdCommenter)
+" NerdCommenter
 " -----------------------------------------------------------------------------
-
 
     " Добавлять пробел перед текстом комментария
     let g:NERDSpaceDelims = 1
@@ -513,11 +557,9 @@ filetype plugin indent on    " required
     " Enable trimming of trailing whitespace when uncommenting
     let g:NERDTrimTrailingWhitespace = 1
 
-
 " -----------------------------------------------------------------------------
-" Дополнительные окна
+" Дополнительные окна (NerdTree, TagBar, GitGutter)
 " -----------------------------------------------------------------------------
-
 
     " Показывать панель NerdTree по клавише
     "                                                                 [ F5 ]
@@ -531,11 +573,9 @@ filetype plugin indent on    " required
     "                                                                 [ F7 ]
     noremap <F7> :GitGutterToggle<CR>
 
-
 " -----------------------------------------------------------------------------
 " SLIMV
 " -----------------------------------------------------------------------------
-
 
     " Не выставлять закрывающие скобки автоматически
     let g:paredit_mode=0
@@ -546,9 +586,16 @@ filetype plugin indent on    " required
     " Установить нестандартный <Leader>
     let g:slimv_leader='<Plug>Slimv_'
 
-
 " -----------------------------------------------------------------------------
 " YouCompleteMe
 " -----------------------------------------------------------------------------
 
+    " Минимальное количество символов, которое нужно ввести для получения
+    " вариантов автодополнения на основе имени идентификатора. Установка в
+    " занчение 99 отключит анализ на основе идентификатора и оставит только
+    " семантический
+    let g:ycm_min_num_of_chars_for_completion = 99
 
+    " Скрывать окно с предложенными вариантами автодополнения по нажатии ESC
+    let g:ycm_key_list_stop_completion = ['<C-Y>', '<ESC>']
+    
