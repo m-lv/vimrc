@@ -221,7 +221,7 @@ filetype plugin indent on    " required
 
     " Комбинация для скрытия/отображения
     "                                                 [ Leader + leader + l ]
-    noremap <leader><leader>l :set list!<CR>
+    noremap <leader><leader>l :set list!<CR>:set list?<CR>
 
     " Внешний вид непечатных символов
     " tab - два символа для отображения табуляции (первый символ и заполнитель)
@@ -411,16 +411,19 @@ filetype plugin indent on    " required
 
     " По-умолчанию отключить подсветку найденных совпадений
     set nohlsearch
-    " Клавиша, позволяющая включать и отключать подсветку
+    " Комбинация, позволяющая включать и отключать подсветку
     "                                                 [ Leader + Leader + h ]
-    noremap <leader><leader>h :set hlsearch!<CR>
+    noremap <leader><leader>h :set hlsearch!<CR>:set hlsearch?<CR>
     
     " Курсор перемещается к найденному слову в процессе набора
     set incsearch
     
     " Не игнорировать регистр по-умолчанию
     set noignorecase
-    " Отключаем умное определение регистра
+    " Комбинация для переключения этого параметра
+    "                                                 [ Leader + Leader + i ]
+    noremap <leader><leader>i :setlocal ignorecase!<CR>:set ignorecase?<CR>
+    " Отключить 'умное' определение регистра
     set nosmartcase
     " В текстовых файлах, а также в в файлах исходного кода для 
     " регистро-независимых языков игнорировать регист
