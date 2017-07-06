@@ -181,24 +181,23 @@ set autoread
 syntax on
 
 " Использовать клавиши k и K для перемещения между окнами
-"                                                                  [ k ]
-"                                                                  [ K ]
+"                                                   [ k ] [ Shift-K ] 
 nnoremap k <C-W>w 
 nnoremap K <C-W>W 
 
 " Редактировать выделенный текст в новом окне
-"                                                 [ Leader + Leader + w ]
+"                                                [ Leader + Leader + W ]
 vnoremap <leader><leader>w :NR<CR>
 
 " Комбинации клавишь для переключения между буферами
-"                                                      [ Ctrl + Page Up ]
-"                                                    [ Ctrl + Page Down ]
+"                                                  [ Ctrl + PageUp ]
+"                                                 [ Ctrl + PageDown ]
 noremap <C-PAGEDOWN> :bnext<CR>
 noremap <C-PAGEUP> :bprevious<CR>
 
 " -- отображение дополнительных элементов
     " Комбинация для скрытия/отображения непечатных символов
-    "                                                 [ Leader + leader + l ]
+    "                                           [ Leader + leader + L ]
     noremap <leader><leader>l :set list!<CR>:set list?<CR>
     " Их внешний вид
     " tab - два символа для отображения табуляции (первый символ и заполнитель)
@@ -210,17 +209,17 @@ noremap <C-PAGEUP> :bprevious<CR>
     " По-умолчанию отключить подсветку при поиске
     set nohlsearch
     " Комбинация, позволяющая включать и отключать подсветку
-    "                                                 [ Leader + Leader + h ]
+    "                                           [ Leader + Leader + H ]
     noremap <leader><leader>h :set hlsearch!<CR>:set hlsearch?<CR>
 
     " NerdTree
-    "                                                                 [ F5 ]
+    "                                                       [ F5 ]
     noremap <F5> :NERDTreeToggle<CR> 
     " TagBar
-    "                                                                 [ F6 ]
+    "                                                       [ F6 ]
     noremap <F6> :TagbarToggle<CR>
     " GitGutter
-    "                                                                 [ F7 ]
+    "                                                       [ F7 ]
     noremap <F7> :GitGutterToggle<CR>
 
 
@@ -250,12 +249,12 @@ noremap <C-PAGEUP> :bprevious<CR>
     " Включить
     set mouse=a
     " Поиск с помощью мыши
-    "                                                         [ Shift + ПКМ ]
-    "                                                         [ Shift + ЛКМ ]
+    "                                                    [ Shift-ПКМ ]
+    "                                                    [ Shift-ЛКМ ]
     set mousemodel=extend
     " При нажатии средней клавиши мыши вставлять текст позицию указателя мыши,
     " а не курсора
-    "                                                                 [ СКМ ]
+    "                                                       [ СКМ ]
     noremap <MiddleMouse> <LeftMouse><MiddleMouse>
     noremap! <MiddleMouse> <LeftMouse><MiddleMouse>
 
@@ -303,7 +302,7 @@ set background=dark
 noremap Y y$
 
 " В режиме выделения повесить функционал плагина vim.surround на клавишу
-"                                                                   [ s ]
+"                                                         [ S ]
 vmap s S
 
 " Не снимать выделение после использования > и <
@@ -323,8 +322,8 @@ vnoremap <S-LEFT> <LEFT>
 
 
 " Перемещение/копирование строк/выделнного текста в соседнее окно
-"                                                  [ Ctrl + L + <ARROW> ]
-"                                           [ Ctrl + L + Ctrl + <ARROW> ]
+"                                                  [ Ctrl-L + ARROW ]
+"                                               [ Ctrl-L + Ctrl-ARROW ]
 vnoremap <C-L><UP> y<C-W><UP>gP<C-W><DOWN>
 nnoremap <C-L><UP> yy<C-W><UP>P<CR><C-W><DOWN>
 vnoremap <C-L><C-UP> d<C-W><UP>gP<C-W><DOWN>
@@ -348,23 +347,23 @@ nnoremap <C-L><C-RIGHT> dd<C-W><RIGHT>P<CR><C-W><LEFT>
 
 " -- комбинации для копирования и вставки через системный буфер
     "  1. копировать
-    "                                                   [ Ctrl + Shift + y  ]
+    "                                              [ Ctrl-Shift-Y ]
     noremap <C-S-Y> "+y
     "  2. вставить
-    "                                                   [ Ctrl + Shift + p  ]
+    "                                              [ Ctrl-Shift-P ]
     noremap <C-S-P> "+p
     "  3. вырезать
-    "                                                   [ Ctrl + Shift + d  ]
+    "                                              [ Ctrl-Shift-D ]
     noremap <C-S-D> "+d
 
 " Отключаем стандартные биндиги для плагина Move(перемещение строк
 " вверх/вниз)    
 let g:move_map_keys = 0
 " Настраиваем свои комбинации
-"                                                          [ Ctrl + Up ]
-"                                                        [ Ctrl + 2xUp ]
-"                                                        [ Ctrl + Down ]
-"                                                      [ Ctrl + 2xDown ]
+"                                                     [ Ctrl-Up ]
+"                                                   [ 2 x Ctrl-Up ]
+"                                                    [ Ctrl-Down ]
+"                                                  [2 x Ctrl-Down ]
 vmap <C-UP> <Plug>MoveBlockUp
 map <C-UP><C-UP> <Plug>MoveLineUp
 vmap <C-DOWN> <Plug>MoveBlockDown
@@ -377,8 +376,8 @@ map t <Plug>Sneak_t
 map T <Plug>Sneak_T
 
 " Поиск последовательности из 2 симовлов
-"                                                                   [ h ]
-"                                                                   [ H ]
+"                                                        [ H ]
+"                                                     [ Shift-H ]
 map h  <Plug>Sneak_s
 map H  <Plug>Sneak_S
 
@@ -418,7 +417,7 @@ map H  <Plug>Sneak_S
     " Не игнорировать регистр по-умолчанию
     set noignorecase
     " Комбинация для переключения этого параметра
-    "                                                 [ Leader + Leader + i ]
+    "                                                 [ Leader + Leader + I ]
     noremap <leader><leader>i :setlocal ignorecase!<CR>:set ignorecase?<CR>
     " Отключить 'умное' определение регистра
     set nosmartcase
@@ -435,43 +434,43 @@ map H  <Plug>Sneak_S
 
 " -- комментирование
     " Закомментировать строку или выделенные блок
-    "                                                       [ Leader + c + c]
+    "                                                 [ Leader + C + C]
     map <leader>cc <plug>NERDCommenterComment
     " Закомментировать строку или выделенные блок (Sexy Comment)
-    "                                                       [ Leader + c + s]
+    "                                                 [ Leader + C + S]
     map <leader>cs <plug>NERDCommenterSexy
     " Раскомментировать строку или выделенные блок
-    "                                                       [ Leader + c + u]
+    "                                                 [ Leader + C + U]
     map <leader>cu <plug>NERDCommenterUncomment
 
 
 " -- документирование
     " Получить тип данных сущности под курсором
-    "                                                       [ Leader + c + t]
+    "                                                 [ Leader + C + T]
     noremap <buffer> <leader>ct <NOP>
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>ct :YcmCompleter GetType<CR>
     " Аналогично предыдущему, но не вызывает перекомпиляцию файла
-    "                                                       [ Leader + c + T]
+    "                                              [ Leader + C + Shift-T]
     noremap <buffer> <leader>cT <NOP>
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>cT :YcmCompleter GetTypeImprecise<CR>
 
     " Получить семантического предка сущности под курсором
-    "                                                       [ Leader + c + p]
+    "                                                 [ Leader + C + P]
     noremap <buffer> <leader>cp <NOP>
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>cp :YcmCompleter GetParent<CR>
 
     " Получить документацию по сущности под курсором
-    "                                                       [ Leader + c + d]
+    "                                                 [ Leader + C + D]
     noremap <buffer> <leader>cd <NOP>
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>cd :YcmCompleter GetDoc<CR>
     autocmd FileType cs 
         \ noremap <buffer> <leader>cd :YcmCompleter GetDoc<CR>
     " Аналогично предыдущему, но не вызывает перекомпиляцию файла
-    "                                                       [ Leader + c + D]
+    "                                              [ Leader + C + Shift-D]
     noremap <buffer> <leader>cD <NOP>
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>cD :YcmCompleter GetDocImprecise<CR>
@@ -481,7 +480,7 @@ map H  <Plug>Sneak_S
 
 " -- рефакторинг
     " FixIt
-    "                                                      [ Leader + r + f ]
+    "                                                 [ Leader + R + F ]
     noremap <buffer> <leader>rf <NOP>
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>rf :YcmCompleter FixIt<CR>
@@ -489,7 +488,7 @@ map H  <Plug>Sneak_S
         \ noremap <buffer> <leader>rf :YcmCompleter FixIt<CR>
 
     " Переименовать сущность под курсором
-    "                                                      [ Leader + r + n ]
+    "                                                 [ Leader + R + N ]
     noremap <buffer> <leader>rn <NOP>
 
 
@@ -497,13 +496,13 @@ map H  <Plug>Sneak_S
     " TODO: реализовать аналогичный функционал для Lisp'а и Python'а
     " Семейство команд GoTo
     "   Перейти к хедеру/ импортируемому файлу
-    "                                                      [ Leader + g + i ]
+    "                                                 [ Leader + G + I ]
     noremap <buffer> <leader>gi <NOP>
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>gi :YcmCompleter GoToInclude<CR>
 
     "   Перейти к объявлению
-    "                                                      [ Leader + g + c ]
+    "                                                 [ Leader + G + C ]
     noremap <buffer> <leader>gc <NOP>
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>gc :YcmCompleter GoToDeclaration<CR>
@@ -513,7 +512,7 @@ map H  <Plug>Sneak_S
     "   \ noremap <buffer> <leader>gc :YcmCompleter GoToDeclaration<CR>
 
     "   Перейти к определению
-    "                                                  [ Leader + g + d ]
+    "                                                 [ Leader + G + D ]
     noremap <buffer> <leader>gd <NOP>
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>gd :YcmCompleter GoToDefinition<CR>
@@ -523,7 +522,7 @@ map H  <Plug>Sneak_S
     "   \ noremap <buffer> <leader>gd :YcmCompleter GoToDefinition<CR>
 
     "   Автоматически подобрать тип перехода и выполнить его
-    "                                                  [ Leader + g + g ]
+    "                                                 [ Leader + G + G ]
     noremap <buffer> <leader>gg <NOP>
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>gg :YcmCompleter GoTo<CR>
@@ -533,7 +532,7 @@ map H  <Plug>Sneak_S
 
     "   Ускоренный аналог предыдущей команы. Не перекомпилирует файл перед
     "   вызовом
-    "                                                  [ Leader + g + G ]
+    "                                             [ Leader + g + Shift-G ]
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>gG :YcmCompleter GoToImprecise<CR>
 
@@ -543,7 +542,7 @@ map H  <Plug>Sneak_S
 
 " -- сборка/выполнение
     " Загрузить текущую конфигурацию vimrc
-    "                                                 [ Leader + Leader + u ]
+    "                                              [ Leader + Leader + U ]
     autocmd BufNewFile,BufRead vimrc,.vimrc 
         \ noremap <buffer> <leader><leader>u :w<CR>:source $MYVIMRC<CR>
 
