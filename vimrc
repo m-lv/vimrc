@@ -3,7 +3,8 @@ set nocompatible              " be improvquired
 
 " Установить при еноюходимости Plug.vim
 if empty(glob("~/.vim/autoload/plug.vim"))
-    execute '!curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.github.com/junegunn/vim-plug/master/plug.vim'
+    execute '!curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.github.com/junegunn/vim-plug/master/plug.vim'
 endif
 
 " Specify a directory for plugins
@@ -52,7 +53,8 @@ call plug#begin('~/.vim/plugged')
     " Поиск последовательностей из двух символов и перемещение между ними
     Plug 'https://github.com/justinmk/vim-sneak'
 
-    " Показывать теги для текущего файла, загружать при открытии соответствующего окна
+    " Показывать теги для текущего файла, загружать при открытии
+    " соответствующего окна
     Plug 'https://github.com/majutsushi/tagbar.git'
 
     " Множественное выделение, как в SublimeText
@@ -64,7 +66,8 @@ call plug#begin('~/.vim/plugged')
     "   - C#
     Plug 'Valloric/YouCompleteMe', {
         \ 'for': ['c', 'cpp', 'cs', 'objc', 'objcpp'],
-        \ 'do': 'git submodule update --init --recursive; ./install.py --clang-completer --omnisharp-completer'
+        \ 'do': 'git submodule update --init --recursive; ./install.py
+                \  --clang-completer --omnisharp-completer'
     \ }
     " генерация конфигурационного файла
     Plug 'rdnetto/YCM-Generator', {
@@ -450,11 +453,13 @@ filetype plugin indent on    " required
     " Семейство команд GoTo
     "   Перейти к хедеру/ импортируемому файлу
     "                                                      [ Leader + g + i ]
+    noremap <buffer> <leader>gi <NOP>
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>gi :YcmCompleter GoToInclude<CR>
 
     "   Перейти к объявлению
     "                                                      [ Leader + g + c ]
+    noremap <buffer> <leader>gc <NOP>
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>gc :YcmCompleter GoToDeclaration<CR>
     autocmd FileType cs 
@@ -464,6 +469,7 @@ filetype plugin indent on    " required
 
     "   Перейти к определению
     "                                                  [ Leader + g + d ]
+    noremap <buffer> <leader>gd <NOP>
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>gd :YcmCompleter GoToDefinition<CR>
     autocmd FileType cs 
@@ -473,6 +479,7 @@ filetype plugin indent on    " required
 
     "   Автоматически подобрать тип перехода и выполнить его
     "                                                  [ Leader + g + g ]
+    noremap <buffer> <leader>gg <NOP>
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>gg :YcmCompleter GoTo<CR>
     autocmd FileType cs 
@@ -490,15 +497,16 @@ filetype plugin indent on    " required
 " -----------------------------------------------------------------------------
 
     " FixIt
-    "                                                      [ Leader + g + f ]
+    "                                                      [ Leader + r + f ]
+    noremap <buffer> <leader>rf <NOP>
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>rf :YcmCompleter FixIt<CR>
     autocmd FileType cs 
         \ noremap <buffer> <leader>rf :YcmCompleter FixIt<CR>
 
     " Переименовать сущность под курсором
-    "                                                      [ Leader + g + r ]
-    "   TODO
+    "                                                      [ Leader + r + n ]
+    noremap <buffer> <leader>rn <NOP>
 
 " -----------------------------------------------------------------------------
 " Комментарии и документация
@@ -516,26 +524,31 @@ filetype plugin indent on    " required
 
     " Получить тип данных сущности под курсором
     "                                                       [ Leader + c + t]
+    noremap <buffer> <leader>ct <NOP>
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>ct :YcmCompleter GetType<CR>
     " Аналогично предыдущему, но не вызывает перекомпиляцию файла
     "                                                       [ Leader + c + T]
+    noremap <buffer> <leader>cT <NOP>
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>cT :YcmCompleter GetTypeImprecise<CR>
 
     " Получить семантического предка сущности под курсором
     "                                                       [ Leader + c + p]
+    noremap <buffer> <leader>cp <NOP>
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>cp :YcmCompleter GetParent<CR>
 
     " Получить документацию по сущности под курсором
     "                                                       [ Leader + c + d]
+    noremap <buffer> <leader>cd <NOP>
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>cd :YcmCompleter GetDoc<CR>
     autocmd FileType cs 
         \ noremap <buffer> <leader>cd :YcmCompleter GetDoc<CR>
     " Аналогично предыдущему, но не вызывает перекомпиляцию файла
     "                                                       [ Leader + c + D]
+    noremap <buffer> <leader>cD <NOP>
     autocmd FileType c,cpp,objc,objcpp 
         \ noremap <buffer> <leader>cD :YcmCompleter GetDocImprecise<CR>
     autocmd FileType cs 
