@@ -18,6 +18,7 @@ set nocompatible              " be iMproved
   " -- интерфейс:
     " Панель статуса и табов
     Plug 'https://github.com/vim-airline/vim-airline.git'
+
     " Тема
     Plug 'https://github.com/morhetz/gruvbox'
 
@@ -41,21 +42,27 @@ set nocompatible              " be iMproved
         \ 'on': 'NERDTreeToggle'
     \ }
 
+    " Дерево измененений файла
+    Plug 'https://github.com/sjl/gundo.vim', {
+        \ 'on': 'GundoToggle'
+    \ }
+
     " Показывать теги для текущего файла, загружать при открытии
     " соответствующего окна
     Plug 'https://github.com/majutsushi/tagbar.git'
 
+
   " -- простое редактирование
     " Улучшение работы с текстовыми объектами
-    Plug 'https://github.com/paradigm/TextObjectify'
-
-    " Возврат к английской раскладке после insert mod'а
-    " *Требует xkb-switch TODO
-    " Plug 'https://github.com/lyokha/vim-xkbswitch'
+    " -- TODO: Plug 'https://github.com/paradigm/TextObjectify'
 
     " Работа со скобками и подобными парными сущностями
     Plug 'https://github.com/tpope/vim-surround'
 
+    " Возврат к английской раскладке после insert mod'а
+    " *Требует xkb-switch TODO
+    " Plug 'https://github.com/lyokha/vim-xkbswitch'
+    
     " Улучшенное поведение .
     Plug 'https://github.com/tpope/vim-repeat'
 
@@ -68,7 +75,17 @@ set nocompatible              " be iMproved
     " Множественное выделение, как в SublimeText
     Plug 'https://github.com/terryma/vim-multiple-cursors.git'
 
+
   " -- фичи IDE
+    " Интерактивный скетчпад (TODO)
+    " Не работает. Хуй знает, почему. В пизду пока что
+    " Plug 'https://github.com/metakirby5/codi.vim', {
+    "      \ 'on': 'Codi!!'
+    " \ }
+
+    " Автодополнение
+    " Plug 'https://github.com/Shougo/neocomplete.vim'
+
     " Автодополнение при интеграции с tmux'ом
     " Plug 'https://github.com/wellle/tmux-complete.vim'
 
@@ -87,6 +104,12 @@ set nocompatible              " be iMproved
         \ 'branch' : 'stable'
     \ } 
 
+    " Переключение между файлами исходного кода и реализации в си-подобных
+    " языках
+    " -- TODO: Plug 'https://github.com/vim-scripts/a.vim', {
+        \ 'for': ['c', 'cpp']
+    \ }
+
     " Генерация кода
     Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
@@ -98,6 +121,7 @@ set nocompatible              " be iMproved
     Plug 'https://github.com/kovisoft/slimv.git', {
         \ 'for': ['lisp','clojure','hy','scheme','racket']
     \ }
+
 
   " Все пользовательские плагины должны быть перечислены до этой строки
 
@@ -159,17 +183,55 @@ set nocompatible              " be iMproved
   " Запрет опасных команд в локальных .vimrc
   set secure
 
-  " Автоматически изменять текущий путь в зависимости от выбраного буфера
-  autocmd BufEnter * lcd %:p:h
-
   " Дефолтная кодировка
   set ffs=unix,dos,mac
   set fencs=utf-8,cp1251,koi8-r,ucs-2,cp866 
 
+  " Формат переноса строки
+  " set fileformat=dos
+
+  " Настройки путей
+    " Автоматически изменять текущий путь в зависимости от выбраного буфера
+    autocmd BufEnter * lcd %:p:h
+    " Для Си и производных от него языков добавить дополнительные пути
+    autocmd FileType c,cpp,objc,objcpp
+        \ setlocal path+="src/include,/usr/include/AL,"
+    " Для питона настроить преобразование между именами модулей и путями к
+    " файлам (простая замена '.' на '/')
+    autocmd FileType python
+        \ setlocal includeexpr=substitute(v:fname,'\\.','/','g')
+
+  " Сохранять последние изменения
+  set undolevels=1000
+
+
+  " Разрешить создавать swap-файлы
+  set swapfile
+  " Помещать их в 
+  set dir=~/.vim/swapfiles/
+
+  " Разрешим создавать бекапы
+  set backup
+  " Установим директорию, в которую будут помещаться файлы бекапов
+  set backupdir=~/.vim/backups/
 
 " -----------------------------------------------------------------------------
 "                              Настройки интерфейса
 " -----------------------------------------------------------------------------
+
+  " -- настройки шелла
+    " Установим шелл
+    set shell=sh
+    " Автоподстановка в шелле
+    set wildmode=longest:list,full
+    " Не использовать файлы перечисленных типов при автоподстановке
+    set wildignore+=.hg,.git,.svn
+    set wildignore+=*.pyc
+
+  " -- настроим меню
+    set wildmenu
+    set wcm=<TAB>
+    noremap <C-M> :emenu<SPACE><TAB>
 
   " Показать номера строк
   set number
@@ -190,26 +252,60 @@ set nocompatible              " be iMproved
   " Подсветка синтаксиса
   syntax on
 
-  " Использовать клавиши k и K для перемещения между окнами
-  "                                                   [ k ] [ Shift-K ] 
-  nnoremap k <C-W>w 
-  nnoremap K <C-W>W 
+  " -- настройки стартового экрана
+    " Сохранять сессии
+    let g:startify_session_persistence = 1
+    " Список разделов, которые будут представлены на стартовом экране 
+    let g:startify_list_order = [
+        \ [ 'Recently used files:' ],
+        \ 'files', 
+        \ [ 'Recently used sessions' ],
+        \ 'sessions', 
+        \ [ 'Bookmarks' ],
+        \ 'bookmarks'
+    \ ]
+    " Максимальное количество отображаемых файлов
+    let g:startify_files_number=5
+    " Список доступных закладок
+    let g:startify_bookmarks = [ 
+        \ {'c': '~/.vim/vimrc'}
+    \ ]
+    " Вернуться к стартовому экрану
+    "                                                       [ F2 ]
+    noremap <F2> :Startify<CR>
+    
 
-  " Редактировать выделенный текст в новом окне
-  "                                                [ Leader + Leader + W ]
-  vnoremap <silent> <leader><leader>w :NR<CR>
+  " -- манипуляции с окнам(views) и табами(tabs)
+    " Изменение размеров окон
+    "                                                   [ Ctrl-Alt-Left ]
+    "                                                  [ Ctrl-Alt-Right ]
+    noremap <C-A-LEFT> <C-W><
+    noremap <C-A-RIGHT> <C-W>>
+    noremap <C-A-UP> <C-W>+  
+    noremap <C-A-DOWN> <C-W>-
 
-  " Комбинации клавишь для переключения между буферами
-  "                                                  [ Ctrl + PageUp ]
-  "                                                 [ Ctrl + PageDown ]
-  noremap <silent> <C-PAGEDOWN> :bnext<CR>
-  noremap <silent> <C-PAGEUP> :bprevious<CR>
+    " Переход между окнами
+    "                                                    [ Alt-Left ]
+    "                                                   [ Alt-Right ]
+    noremap <A-LEFT> <C-W><LEFT>
+    noremap <A-RIGHT> <C-W><RIGHT>
+    noremap <A-UP> <C-W><UP>
+    noremap <A-DOWN> <C-W><DOWN>
 
-  " Комбинации для открытия текущего файла в двух view
-  "                                                [ Leader + Leader + S ]
-  "                                             [ Leader + Leader + Shift-S ]
-  noremap <leader><leader>s :vsplit<CR>
-  noremap <leader><leader>S :split<CR>
+    " Закрыть окно без сохранения
+    "                                                   [ Ctrl-W + Shift-Q ]
+    noremap <C-W><S-Q> :q!<CR>
+
+    " Редактировать выделенный текст в новом окне
+    "                                                [ Leader + Leader + W ]
+    vnoremap <silent> <leader><leader>w :NR<CR>
+
+    " Комбинации клавишь для переключения между буферами
+    "                                                  [ Ctrl + PageUp ]
+    "                                                 [ Ctrl + PageDown ]
+    noremap <silent> <C-PAGEDOWN> :bnext<CR>
+    noremap <silent> <C-PAGEUP> :bprevious<CR>
+
 
   " -- отображение дополнительных элементов
     " Комбинация для скрытия/отображения непечатных символов
@@ -237,28 +333,36 @@ set nocompatible              " be iMproved
     " GitGutter
     "                                                       [ F7 ]
     noremap <silent> <F7> :GitGutterToggle<CR>
+    " Gundo
+    "                                                       [ F8 ]
+    noremap <silent> <F8> :GundoToggle<CR>
+    " Gundo использует Python3 по-умолчанию
+    let g:gundo_prefer_python3=1
+    " Показывать интерактивный скетчпад
+    "                                                      [ F12 ]
+    noremap <F12> <NOP>
+    autocmd FileType python
+        \ noremap <buffer> <silent> <F12> :Codi!!<CR>
 
 
-  " -- настройки шелла
-    " Установим шелл
-    set shell=sh
-    " Автоподстановка в шелле
-    set wildmode=longest:list,full
-
-
-  " -- длинныы строки 
+  " -- длинные строки 
     " Включить перенос(визуальный) по словам, если длина строки слишком велика
     set wrap
     " Запретить 'разрывание' длинных строк
-    set nolbr
+    set linebreak
+    " Показывать символ ↪ при переносе длинных строк
+    let &sbr = nr2char(8618).' '
     " В случае наличия неразорванной длинной строки перемещение курсора вверх и
     " вниз работает более привычно
     nnoremap <DOWN> gj
     nnoremap <UP> gk
+    " Показывать справа максимальную приемлимую длину строки
+    set colorcolumn=81
     " Ширина строки
     set textwidth=80
     " Для лиспа принимаем ширину окна в 120 символов
-    autocmd FileType lisp,clojure,hy,scheme,racket setlocal textwidth=120
+    autocmd FileType lisp,clojure,hy,scheme,racket 
+        \ setlocal colorcolumn=121 textwidth=120
 
 
   " --мышь
@@ -275,8 +379,8 @@ set nocompatible              " be iMproved
     noremap! <silent> <MiddleMouse> <LeftMouse><MiddleMouse>
 
 
-" Установить тёмый фон
-set background=dark
+  " Установить тёмый фон
+  set background=dark
 
   " -- тема Gruvbox
     " Включить наклонный шрифт
@@ -329,6 +433,18 @@ set background=dark
     autocmd BufNewFile,BufRead vimrc,.vimrc setlocal foldmethod=indent
 
 
+  " -- Codi
+    " " Установить ширину доп. окна в 80 символов
+    " let g:codi#width=80
+    " " Обновлять окно при вводе текста
+    " let g:codi#autocmd = 'TextChanged'
+    " " Список инетрпретаторов
+    " let g:codi#interpreters = {
+    "     \ 'python': { 'bin': 'python' },
+    " \ }
+    " " Включить лог
+    " let g:codi#log = expand('~/.vim/codi_log')
+
 
 " -----------------------------------------------------------------------------
 "                             Простое редактирование
@@ -342,8 +458,11 @@ set background=dark
   vmap s S
 
   " Не снимать выделение после использования > и <
-  " vnoremap < <gv
-  " vnoremap > >gv
+  vnoremap < <gv
+  vnoremap > >gv
+  " Использовать в визуальном режиме , и . как < и > 
+  vmap , <
+  vmap . >
 
   " При нажатии Shift вместе со стрелкой выделять текст
   nnoremap <S-UP> <S-V><UP>
@@ -356,54 +475,53 @@ set background=dark
   vnoremap <S-RIGHT> <RIGHT>
   vnoremap <S-LEFT> <LEFT>
 
+  " -- манипуляции со строками
+    " Отключаем стандартные биндиги для плагина Move(перемещение строк
+    " вверх/вниз)    
+    let g:move_map_keys = 0
+    " Настраиваем свои комбинации
+    "                                                  [ Ctrl-Shift-Up ]
+    "                                                 [ Ctrl-Shift-Down ]
+    map <silent> <C-UP> <Plug>MoveLineUp
+    map <silent> <C-DOWN> <Plug>MoveLineDown
+    vmap <silent> <C-UP> <Plug>MoveBlockUp
+    vmap <silent> <C-DOWN> <Plug>MoveBlockDown
 
-  " Перемещение/копирование строк/выделнного текста в соседнее окно
-  "                                                  [ Ctrl-L + ARROW ]
-  "                                               [ Ctrl-L + Ctrl-ARROW ]
-  vnoremap <C-L><UP> y<C-W><UP>gP<C-W><DOWN>
-  nnoremap <C-L><UP> yy<C-W><UP>P<CR><C-W><DOWN>
-  vnoremap <C-L><C-UP> d<C-W><UP>gP<C-W><DOWN>
-  nnoremap <C-L><C-UP> dd<C-W><UP>P<CR><C-W><DOWN>
+    " Дублирование строк или выделенных фрагментов текста
+    noremap <C-S-UP> yyP
+    noremap <C-S-DOWN> yyp
+    vnoremap <C-S-UP> dPp
+    vnoremap <C-S-DOWN> dPp
 
-  vnoremap <C-L><LEFT> y<C-W><LEFT>gP<C-W><RIGHT>
-  nnoremap <C-L><LEFT> yy<C-W><LEFT>P<CR><C-W><RIGHT>
-  vnoremap <C-L><C-LEFT> d<C-W><LEFT>gP<C-W><RIGHT>
-  nnoremap <C-L><C-LEFT> dd<C-W><LEFT>P<CR><C-W><RIGHT>
+    " Перемещение/копирование строк/выделнного текста в соседнее окно
+    "                                                  [ Ctrl-Shift-Left ]
+    "                                                 [ Ctrl-Shift-Right ]
+    "                                                    [ Ctrl-Left ]
+    "                                                   [ Ctrl-Right ]
+    nnoremap <C-S-LEFT> yy<C-W><LEFT>P<CR><C-W><RIGHT>
+    nnoremap <C-LEFT> dd<C-S-W><LEFT>P<CR><C-W><RIGHT>
+    vnoremap <C-S-LEFT> y<C-W><LEFT>gP<C-W><RIGHT>
+    vnoremap <C-LEFT> d<C-S-W><LEFT>gP<C-W><RIGHT>
 
-  vnoremap <C-L><DOWN> y<C-W><DOWN>gP<C-W><UP>
-  nnoremap <C-L><DOWN> yy<C-W><DOWN>P<CR><C-W><UP>
-  vnoremap <C-L><C-DOWN> d<C-W><DOWN>gP<C-W><UP>
-  nnoremap <C-L><C-DOWN> dd<C-W><DOWN>P<CR><C-W><UP>
-
-  vnoremap <C-L><RIGHT> y<C-W><RIGHT>gP<C-W><LEFT>
-  nnoremap <C-L><RIGHT> yy<C-W><RIGHT>P<CR><C-W><LEFT>
-  vnoremap <C-L><C-RIGHT> d<C-W><RIGHT>gP<C-W><LEFT>
-  nnoremap <C-L><C-RIGHT> dd<C-W><RIGHT>P<CR><C-W><LEFT>
+    vnoremap <C-S-RIGHT> y<C-W><RIGHT>gP<C-W><LEFT>
+    vnoremap <C-RIGHT> d<C-S-W><RIGHT>gP<C-W><LEFT>
+    nnoremap <C-S-RIGHT> yy<C-W><RIGHT>P<CR><C-W><LEFT>
+    nnoremap <C-RIGHT> dd<C-S-W><RIGHT>P<CR><C-W><LEFT>
 
 
   " -- комбинации для копирования и вставки через системный буфер
     "  1. копировать
     "                                              [ Ctrl-Shift-Y ]
     noremap <C-S-Y> "+y
+    noremap <C-S-Y><C-S-Y> "+yy
     "  2. вставить
     "                                              [ Ctrl-Shift-P ]
     noremap <C-S-P> "+p
     "  3. вырезать
     "                                              [ Ctrl-Shift-D ]
     noremap <C-S-D> "+d
+    noremap <C-S-D><C-S-D> "+dd
 
-  " Отключаем стандартные биндиги для плагина Move(перемещение строк
-  " вверх/вниз)    
-  let g:move_map_keys = 0
-  " Настраиваем свои комбинации
-  "                                                     [ Ctrl-Up ]
-  "                                                   [ 2 x Ctrl-Up ]
-  "                                                    [ Ctrl-Down ]
-  "                                                  [2 x Ctrl-Down ]
-  vmap <silent> <C-UP> <Plug>MoveBlockUp
-  map <silent> <C-UP><C-UP> <Plug>MoveLineUp
-  vmap <silent> <C-DOWN> <Plug>MoveBlockDown
-  map <silent> <C-DOWN><C-DOWN> <Plug>MoveLineDown
 
   " Улучшенное поведение f, F, t и T
   map <silent> f <Plug>Sneak_f
@@ -448,6 +566,8 @@ set background=dark
 
 
   " -- поиск по тексту
+    " При поиске останавливаться в конце файла
+    set nowrapscan
     " Вообще хз, что это такое
     set noshowmatch
     " Курсор перемещается к найденному слову в процессе набора
@@ -458,10 +578,12 @@ set background=dark
     "                                                 [ Leader + Leader + I ]
     noremap <silent> <leader><leader>i 
         \ :setlocal ignorecase!<CR>:set ignorecase?<CR>
+    " Включить автодополнение
+    set infercase
     " Отключить 'умное' определение регистра
     set nosmartcase
     " В текстовых файлах, а также в в файлах исходного кода для 
-    " регистро-независимых языков игнорировать регист
+    " регистро-независимых языков игнорировать регистр
     autocmd FileType txt,html,yaml,apache set ignorecase
     autocmd FileType lisp,clojure,hy,scheme,racket set ignorecase
 
@@ -576,7 +698,7 @@ set background=dark
         \ noremap <buffer> <leader>gG :YcmCompleter GoToImprecise<CR>
 
   " -- копии инструкций перехода с открытием нового таба
-  "                                              [ аналогично, но Ctrl+G ]
+  "                                           [ аналогично, но с Ctrl+G ]
     noremap <C-G>g :vsplit<CR><C-W>wgg
     noremap <C-G><C-G> :vsplit<CR><C-W>wgg
     noremap <C-G> :vsplit<CR><C-W>wG
@@ -596,25 +718,17 @@ set background=dark
     " Загрузить текущую конфигурацию vimrc
     "                                              [ Leader + Leader + U ]
     autocmd BufNewFile,BufRead vimrc,.vimrc 
-        \ noremap <buffer> <leader><leader>u :w<CR>:source $MYVIMRC<CR>
+        \ noremap <buffer> <leader><leader>u :source $MYVIMRC<CR>
+
+    " Настроить команды сборки для различных языков программирования
+    autocmd FileType c,cpp,objc,objcpp,make
+        \ setlocal makeprg=make\ -C\ ../build\ -j9
+
+    " Собирать проект по нажатии на 
+    "                                                     [ F3 ]
+    noremap <F3> :make!<CR>
 
 
-  " -- YouCompleteMe
-    " Минимальное количество символов, которое нужно ввести для получения
-    " вариантов автодополнения на основе имени идентификатора. Установка в
-    " занчение 99 отключит анализ на основе идентификатора и оставит только
-    " семантический
-    let g:ycm_min_num_of_chars_for_completion = 99
-
-    " Скрывать окно с предложенными вариантами автодополнения по нажатии ESC
-    let g:ycm_key_list_stop_completion = ['<C-Y>', '<ESC>']
-    
-
-  " -- UltiSnips
-    let g:UltiSnipsExpandTrigger="<C-CR>"
-    let g:UltiSnipsListSnippets="<C-TAB>"
-    let g:UltiSnipsJumpForwardTrigger="<C-RIGHT>"
-    let g:UltiSnipsJumpBackwardTrigger="<C-LEFT>"
 
   " -- Slimv
     " Не выставлять закрывающие скобки автоматически
