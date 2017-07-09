@@ -75,8 +75,13 @@ set nocompatible              " be iMproved
     " Множественное выделение, как в SublimeText
     Plug 'https://github.com/terryma/vim-multiple-cursors.git'
 
+    " Фильтрация и выравнивание текста
+    Plug 'https://github.com/junegunn/vim-easy-align'
+
 
   " -- фичи IDE
+    " Коллекция языковых пакетов для туевой хучи языков
+    Plug 'https://github.com/sheerun/vim-polyglot'
     " Интерактивный скетчпад (TODO)
     " Не работает. Хуй знает, почему. В пизду пока что
     " Plug 'https://github.com/metakirby5/codi.vim', {
@@ -191,8 +196,9 @@ set nocompatible              " be iMproved
   " set fileformat=dos
 
   " Настройки путей
-    " Автоматически изменять текущий путь в зависимости от выбраного буфера
-    autocmd BufEnter * lcd %:p:h
+    " Выбрать путь до открытого буфера в качестве текущего
+    "                                                     [ ! + P ]
+    noremap <silent> !p :lcd %:p:h<CR>
     " Для Си и производных от него языков добавить дополнительные пути
     autocmd FileType c,cpp,objc,objcpp
         \ setlocal path+="src/include,/usr/include/AL,"
@@ -219,6 +225,9 @@ set nocompatible              " be iMproved
 "                              Настройки интерфейса
 " -----------------------------------------------------------------------------
 
+  " Отключаем ебучее пищание
+  set noerrorbells visualbell t_vb=
+
   " -- настройки шелла
     " Установим шелл
     set shell=sh
@@ -233,15 +242,22 @@ set nocompatible              " be iMproved
     set wcm=<TAB>
     noremap <C-M> :emenu<SPACE><TAB>
 
-  " Показать номера строк
-  set number
+  " -- нумерация строк
+    " По-умолчанию нумеровать, начиная с первой строки
+    set number
+    " Включать/выключать относительную нумерацию
+    "                                                     [ ! + N ]
+    "                                                  [ ! + Shift-N ]
+    noremap !n :setlocal relativenumber!<CR> 
+    noremap !N :setlocal number!<CR> 
+      
 
   " Включить/выключить подсветку положения курсора(по-умолчанию -- нет)
-  "                                                [ Leader + Leader + C ]
-  "                                             [ Leader + Leader + Shift-C ]
+  "                                                       [ ! + C ]
+  "                                                    [ ! + Shift-C ]
   set nocursorline nocursorcolumn
-  noremap <silent> <leader><leader>c :set cursorcolumn!<CR>
-  noremap <silent> <leader><leader>C :set cursorline!<CR>
+  noremap <silent> !c :set cursorcolumn!<CR>
+  noremap <silent> !C :set cursorline!<CR>
 
   " Автоматически обновлять файл при изменении сторонней программой
   set autoread
@@ -279,26 +295,26 @@ set nocompatible              " be iMproved
     " Изменение размеров окон
     "                                                   [ Ctrl-Alt-Left ]
     "                                                  [ Ctrl-Alt-Right ]
-    noremap <C-A-LEFT> <C-W><
+    noremap <C-A-LEFT>  <C-W><
     noremap <C-A-RIGHT> <C-W>>
-    noremap <C-A-UP> <C-W>+  
-    noremap <C-A-DOWN> <C-W>-
+    noremap <C-A-UP>    <C-W>+
+    noremap <C-A-DOWN>  <C-W>-
 
     " Переход между окнами
     "                                                    [ Alt-Left ]
     "                                                   [ Alt-Right ]
-    noremap <A-LEFT> <C-W><LEFT>
+    noremap <A-LEFT>  <C-W><LEFT>
     noremap <A-RIGHT> <C-W><RIGHT>
-    noremap <A-UP> <C-W><UP>
-    noremap <A-DOWN> <C-W><DOWN>
+    noremap <A-UP>    <C-W><UP>
+    noremap <A-DOWN>  <C-W><DOWN>
 
     " Закрыть окно без сохранения
-    "                                                   [ Ctrl-W + Shift-Q ]
+    "                                                 [ Ctrl-W + Shift-Q ]
     noremap <C-W><S-Q> :q!<CR>
 
     " Редактировать выделенный текст в новом окне
-    "                                                [ Leader + Leader + W ]
-    vnoremap <silent> <leader><leader>w :NR<CR>
+    "                                                      [ ! + W ]
+    vnoremap <silent> !w :NR<CR>
 
     " Комбинации клавишь для переключения между буферами
     "                                                  [ Ctrl + PageUp ]
@@ -309,8 +325,8 @@ set nocompatible              " be iMproved
 
   " -- отображение дополнительных элементов
     " Комбинация для скрытия/отображения непечатных символов
-    "                                           [ Leader + leader + L ]
-    noremap <silent> <leader><leader>l :set list!<CR>:set list?<CR>
+    "                                                      [ ! + L ]
+    noremap <silent> !l :set list!<CR>:set list?<CR>
     " Их внешний вид
     " tab - два символа для отображения табуляции (первый символ и заполнитель)
     " eol - символ для отображения конца строки
@@ -321,8 +337,8 @@ set nocompatible              " be iMproved
     " По-умолчанию отключить подсветку при поиске
     set nohlsearch
     " Комбинация, позволяющая включать и отключать подсветку
-    "                                           [ Leader + Leader + H ]
-    noremap <silent> <leader><leader>h :set hlsearch!<CR>:set hlsearch?<CR>
+    "                                                      [ ! + H ]
+    noremap <silent> !h :set hlsearch!<CR>:set hlsearch?<CR>
 
     " NerdTree
     "                                                       [ F5 ]
@@ -411,9 +427,6 @@ set nocompatible              " be iMproved
   " -- folding
     " Отключить сворачивание по-умолчанию
     set nofoldenable
-    " Комбинация для включения/выключения
-    "                                           [ Leader + Leader + F ]
-    noremap <silent> <leader><leader>f :set foldenable!<CR>:set foldenable?<CR>
     " Свернуть/развернуть
     "                                                  [ Space ]
     noremap <silent> <Space> za
@@ -431,6 +444,14 @@ set nocompatible              " be iMproved
     noremap zb zj
     " При редактировании vimrc включить сворачивание на основе отступов
     autocmd BufNewFile,BufRead vimrc,.vimrc setlocal foldmethod=indent
+    " Включение различных режимов фолдинга
+    "                                              [ Z + Z + LETTER ]
+    noremap <silent> zzu :set foldmethod=manual<CR>:set foldmethod?<CR>
+    noremap <silent> zzi :set foldmethod=indent<CR>:set foldmethod?<CR>
+    noremap <silent> zze :set foldmethod=expr<CR>:set foldmethod?<CR>
+    noremap <silent> zzm :set foldmethod=marker<CR>:set foldmethod?<CR>
+    noremap <silent> zzs :set foldmethod=syntax<CR>:set foldmethod?<CR>
+    noremap <silent> zzd :set foldmethod=diff<CR>:set foldmethod?<CR>
 
 
   " -- Codi
@@ -465,15 +486,15 @@ set nocompatible              " be iMproved
   vmap . >
 
   " При нажатии Shift вместе со стрелкой выделять текст
-  nnoremap <S-UP> <S-V><UP>
-  nnoremap <S-DOWN> <S-V><DOWN>
-  nnoremap <S-RIGHT> <S-V><RIGHT>
-  nnoremap <S-LEFT> <S-V><LEFT>
+    nnoremap <S-UP>    <S-V><UP>
+    nnoremap <S-DOWN>  <S-V><DOWN>
+    nnoremap <S-RIGHT> <S-V><RIGHT>
+    nnoremap <S-LEFT>  <S-V><LEFT>
 
-  vnoremap <S-UP> <UP>
-  vnoremap <S-DOWN> <DOWN>
-  vnoremap <S-RIGHT> <RIGHT>
-  vnoremap <S-LEFT> <LEFT>
+    vnoremap <S-UP>    <UP>
+    vnoremap <S-DOWN>  <DOWN>
+    vnoremap <S-RIGHT> <RIGHT>
+    vnoremap <S-LEFT>  <LEFT>
 
   " -- манипуляции со строками
     " Отключаем стандартные биндиги для плагина Move(перемещение строк
@@ -482,15 +503,15 @@ set nocompatible              " be iMproved
     " Настраиваем свои комбинации
     "                                                  [ Ctrl-Shift-Up ]
     "                                                 [ Ctrl-Shift-Down ]
-    map <silent> <C-UP> <Plug>MoveLineUp
-    map <silent> <C-DOWN> <Plug>MoveLineDown
-    vmap <silent> <C-UP> <Plug>MoveBlockUp
+    map  <silent> <C-UP>   <Plug>MoveLineUp
+    map  <silent> <C-DOWN> <Plug>MoveLineDown
+    vmap <silent> <C-UP>   <Plug>MoveBlockUp
     vmap <silent> <C-DOWN> <Plug>MoveBlockDown
 
     " Дублирование строк или выделенных фрагментов текста
-    noremap <C-S-UP> yyP
-    noremap <C-S-DOWN> yyp
-    vnoremap <C-S-UP> dPp
+    noremap  <C-S-UP>   yyP
+    noremap  <C-S-DOWN> yyp
+    vnoremap <C-S-UP>   dPp
     vnoremap <C-S-DOWN> dPp
 
     " Перемещение/копирование строк/выделнного текста в соседнее окно
@@ -498,15 +519,15 @@ set nocompatible              " be iMproved
     "                                                 [ Ctrl-Shift-Right ]
     "                                                    [ Ctrl-Left ]
     "                                                   [ Ctrl-Right ]
-    nnoremap <C-S-LEFT> yy<C-W><LEFT>P<CR><C-W><RIGHT>
-    nnoremap <C-LEFT> dd<C-S-W><LEFT>P<CR><C-W><RIGHT>
-    vnoremap <C-S-LEFT> y<C-W><LEFT>gP<C-W><RIGHT>
-    vnoremap <C-LEFT> d<C-S-W><LEFT>gP<C-W><RIGHT>
+    nnoremap <C-S-LEFT>  yy<C-W><LEFT>P<CR><C-W><RIGHT>
+    nnoremap <C-LEFT>    dd<C-S-W><LEFT>P<CR><C-W><RIGHT>
+    vnoremap <C-S-LEFT>  y<C-W><LEFT>gP<C-W><RIGHT>
+    vnoremap <C-LEFT>    d<C-S-W><LEFT>gP<C-W><RIGHT>
 
     vnoremap <C-S-RIGHT> y<C-W><RIGHT>gP<C-W><LEFT>
-    vnoremap <C-RIGHT> d<C-S-W><RIGHT>gP<C-W><LEFT>
+    vnoremap <C-RIGHT>   d<C-S-W><RIGHT>gP<C-W><LEFT>
     nnoremap <C-S-RIGHT> yy<C-W><RIGHT>P<CR><C-W><LEFT>
-    nnoremap <C-RIGHT> dd<C-S-W><RIGHT>P<CR><C-W><LEFT>
+    nnoremap <C-RIGHT>   dd<C-S-W><RIGHT>P<CR><C-W><LEFT>
 
 
   " -- комбинации для копирования и вставки через системный буфер
@@ -548,16 +569,16 @@ set nocompatible              " be iMproved
     " Отключить 'Умные' отступы
     set nosmarttab
     " Специфичные настройки для различных типов файлов
-    autocmd FileType php setlocal ts=4 sts=4 sw=4 noet
-    autocmd FileType python setlocal ts=4 sts=4 sw=4 et
+    autocmd FileType php        setlocal ts=4 sts=4 sw=4 noet
+    autocmd FileType python     setlocal ts=4 sts=4 sw=4 et
     autocmd FileType javascript setlocal ts=4 sts=4 sw=4 noet
-    autocmd FileType html setlocal ts=2 sts=2 sw=2 noet
-    autocmd FileType xhtml setlocal ts=2 sts=2 sw=2 noet
-    autocmd FileType xml setlocal ts=2 sts=2 sw=2 noet
-    autocmd FileType css setlocal ts=2 sts=2 sw=2 noet
-    autocmd FileType vim setlocal ts=4 sts=4 sw=4 et
-    autocmd FileType apache setlocal ts=2 sts=2 sw=2 noet
-    autocmd FileType yaml setlocal ts=2 sts=2 sw=2 et
+    autocmd FileType html       setlocal ts=2 sts=2 sw=2 noet
+    autocmd FileType xhtml      setlocal ts=2 sts=2 sw=2 noet
+    autocmd FileType xml        setlocal ts=2 sts=2 sw=2 noet
+    autocmd FileType css        setlocal ts=2 sts=2 sw=2 noet
+    autocmd FileType vim        setlocal ts=4 sts=4 sw=4 et
+    autocmd FileType apache     setlocal ts=2 sts=2 sw=2 noet
+    autocmd FileType yaml       setlocal ts=2 sts=2 sw=2 et
     autocmd FileType lisp,clojure,hy,scheme,racket 
         \ setlocal ts=2 sts=2 sw=2 et
     autocmd FileType c,cpp setlocal cin
@@ -575,8 +596,8 @@ set nocompatible              " be iMproved
     " Не игнорировать регистр по-умолчанию
     set noignorecase
     " Комбинация для переключения этого параметра
-    "                                                 [ Leader + Leader + I ]
-    noremap <silent> <leader><leader>i 
+    "                                                      [ ! + I ]
+    noremap <silent> !i 
         \ :setlocal ignorecase!<CR>:set ignorecase?<CR>
     " Включить автодополнение
     set infercase
@@ -588,147 +609,21 @@ set nocompatible              " be iMproved
     autocmd FileType lisp,clojure,hy,scheme,racket set ignorecase
 
 
+  " -- выравнивание и фильтрация
+    " Использование плагина  EasyAllign
+    "                                                     [ G + A ]
+    xmap ga <Plug>(EasyAlign)
+    nmap ga <Plug>(EasyAlign)
+
+
 
 " -----------------------------------------------------------------------------
 "                                  Функции IDE
 " -----------------------------------------------------------------------------
 
-  " -- комментирование
-    " Закомментировать строку или выделенные блок
-    "                                                 [ Leader + C + C]
-    map <leader>cc <plug>NERDCommenterComment
-    " Закомментировать строку или выделенные блок (Sexy Comment)
-    "                                                 [ Leader + C + S]
-    map <leader>cs <plug>NERDCommenterSexy
-    " Раскомментировать строку или выделенные блок
-    "                                                 [ Leader + C + U]
-    map <leader>cu <plug>NERDCommenterUncomment
 
-
-  " -- документирование
-    " Получить тип данных сущности под курсором
-    "                                                 [ Leader + C + T]
-    noremap <buffer> <leader>ct <NOP>
-    autocmd FileType c,cpp,objc,objcpp 
-        \ noremap <buffer> <leader>ct :YcmCompleter GetType<CR>
-    " Аналогично предыдущему, но не вызывает перекомпиляцию файла
-    "                                              [ Leader + C + Shift-T]
-    noremap <buffer> <leader>cT <NOP>
-    autocmd FileType c,cpp,objc,objcpp 
-        \ noremap <buffer> <leader>cT :YcmCompleter GetTypeImprecise<CR>
-
-    " Получить семантического предка сущности под курсором
-    "                                                 [ Leader + C + P]
-    noremap <buffer> <leader>cp <NOP>
-    autocmd FileType c,cpp,objc,objcpp 
-        \ noremap <buffer> <leader>cp :YcmCompleter GetParent<CR>
-
-    " Получить документацию по сущности под курсором
-    "                                                 [ Leader + C + D]
-    noremap <buffer> <leader>cd <NOP>
-    autocmd FileType c,cpp,objc,objcpp 
-        \ noremap <buffer> <leader>cd :YcmCompleter GetDoc<CR>
-    autocmd FileType cs 
-        \ noremap <buffer> <leader>cd :YcmCompleter GetDoc<CR>
-    " Аналогично предыдущему, но не вызывает перекомпиляцию файла
-    "                                              [ Leader + C + Shift-D]
-    noremap <buffer> <leader>cD <NOP>
-    autocmd FileType c,cpp,objc,objcpp 
-        \ noremap <buffer> <leader>cD :YcmCompleter GetDocImprecise<CR>
-    autocmd FileType cs 
-        \ noremap <buffer> <leader>cD :YcmCompleter GetDocImprecise<CR>
-    
-
-  " -- рефакторинг
-    " FixIt
-    "                                                 [ Leader + R + F ]
-    noremap <buffer> <leader>rf <NOP>
-    autocmd FileType c,cpp,objc,objcpp 
-        \ noremap <buffer> <leader>rf :YcmCompleter FixIt<CR>
-    autocmd FileType cs 
-        \ noremap <buffer> <leader>rf :YcmCompleter FixIt<CR>
-
-    " Переименовать сущность под курсором
-    "                                                 [ Leader + R + N ]
-    noremap <buffer> <leader>rn <NOP>
-
-
-  " -- переходы
-    " TODO: реализовать аналогичный функционал для Lisp'а и Python'а
-    " Семейство команд GoTo
-    "   Перейти к хедеру/ импортируемому файлу
-    "                                                 [ Leader + G + I ]
-    noremap <buffer> <leader>gi <NOP>
-    autocmd FileType c,cpp,objc,objcpp 
-        \ noremap <buffer> <leader>gi :YcmCompleter GoToInclude<CR>
-
-    "   Перейти к объявлению
-    "                                                 [ Leader + G + C ]
-    noremap <buffer> <leader>gc <NOP>
-    autocmd FileType c,cpp,objc,objcpp 
-        \ noremap <buffer> <leader>gc :YcmCompleter GoToDeclaration<CR>
-    autocmd FileType cs 
-        \ noremap <buffer> <leader>gc :YcmCompleter GoToDeclaration<CR>
-    " autocmd FileType python 
-    "   \ noremap <buffer> <leader>gc :YcmCompleter GoToDeclaration<CR>
-
-    "   Перейти к определению
-    "                                                 [ Leader + G + D ]
-    noremap <buffer> <leader>gd <NOP>
-    autocmd FileType c,cpp,objc,objcpp 
-        \ noremap <buffer> <leader>gd :YcmCompleter GoToDefinition<CR>
-    autocmd FileType cs 
-        \ noremap <buffer> <leader>gd :YcmCompleter GoToDefinition<CR>
-    " autocmd FileType python 
-    "   \ noremap <buffer> <leader>gd :YcmCompleter GoToDefinition<CR>
-
-    "   Автоматически подобрать тип перехода и выполнить его
-    "                                                 [ Leader + G + G ]
-    noremap <buffer> <leader>gg <NOP>
-    autocmd FileType c,cpp,objc,objcpp 
-        \ noremap <buffer> <leader>gg :YcmCompleter GoTo<CR>
-    autocmd FileType cs 
-        \ noremap <buffer> <leader>gi :YcmCompleter GoTo<CR>
-    " autocmd FileType python noremap <buffer> <leader>gi :YcmCompleter GoTo<CR>
-
-    "   Ускоренный аналог предыдущей команы. Не перекомпилирует файл перед
-    "   вызовом
-    "                                             [ Leader + g + Shift-G ]
-    autocmd FileType c,cpp,objc,objcpp 
-        \ noremap <buffer> <leader>gG :YcmCompleter GoToImprecise<CR>
-
-  " -- копии инструкций перехода с открытием нового таба
-  "                                           [ аналогично, но с Ctrl+G ]
-    noremap <C-G>g :vsplit<CR><C-W>wgg
-    noremap <C-G><C-G> :vsplit<CR><C-W>wgg
-    noremap <C-G> :vsplit<CR><C-W>wG
-    noremap <C-G>f :vsplit<CR><C-W>wgf 
-    map <leader><C-G>c :vsplit<CR><C-W>w<leader>gi
-    map <leader><C-G>f :vsplit<CR><C-W>w<leader>gf
-    map <leader><C-G>g :vsplit<CR><C-W>w<leader>gg
-    map <leader><C-G><C-G> :vsplit<CR><C-W>w<leader>gg
-    map <leader><C-G>G :vsplit<CR><C-W>w<leader>gG
-    map <leader><C-G><C-S-G> :vsplit<CR><C-W>w<leader>gG
-
-
-  " -- отладка
-    " TODO
-
-  " -- сборка/выполнение
-    " Загрузить текущую конфигурацию vimrc
-    "                                              [ Leader + Leader + U ]
     autocmd BufNewFile,BufRead vimrc,.vimrc 
         \ noremap <buffer> <leader><leader>u :source $MYVIMRC<CR>
-
-    " Настроить команды сборки для различных языков программирования
-    autocmd FileType c,cpp,objc,objcpp,make
-        \ setlocal makeprg=make\ -C\ ../build\ -j9
-
-    " Собирать проект по нажатии на 
-    "                                                     [ F3 ]
-    noremap <F3> :make!<CR>
-
-
 
   " -- Slimv
     " Не выставлять закрывающие скобки автоматически
